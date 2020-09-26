@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.IO;
+using System.Threading;
 using application.Commands;
 using application.Commands.Handlers;
 using core;
@@ -8,14 +9,15 @@ using Xunit;
 
 namespace application.tests
 {
-    public class when_a_new_streamer_is_registering
+    public class when_name_and_description_are_provided
     {
         private RegisterNewStreamerHandler _subject;
         private Mock<IApplicationContext> _context;
 
-        public readonly string StreamerName = "streamer-name";
+        public const string StreamerName = "streamer-name";
+        public const string Description = "description";
 
-        public when_a_new_streamer_is_registering()
+        public when_name_and_description_are_provided()
         {
             Arrange();
 
@@ -32,16 +34,25 @@ namespace application.tests
         {
             _subject.Handle(new RegisterNewStreamer
             {
-                Name = StreamerName
+                Name = StreamerName,
+                Description = Description
             }, CancellationToken.None);
         }
 
         [Fact]
         public void name_is_captured()
         {
-            _context.Verify(ctx =>
-                ctx.Insert(It.Is<Streamer>(
-                    s => s.Name == StreamerName)), Times.Once);
+            _context.Verify(
+                ctx => ctx.Insert(
+                    It.Is<Streamer>(s => s.Name == StreamerName)), Times.Once);
+        }
+
+        [Fact]
+        public void description_is_captured()
+        {
+            _context.Verify(
+                ctx => ctx.Insert(
+                    It.Is<Streamer>(s => s.Description == Description)), Times.Once);
         }
 
         [Fact]

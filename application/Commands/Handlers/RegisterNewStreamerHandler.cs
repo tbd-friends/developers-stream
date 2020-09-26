@@ -19,7 +19,8 @@ namespace application.Commands.Handlers
         {
             _context.Insert(new Streamer
             {
-                Name = request.Name
+                Name = request.Name,
+                Description = request.Description
             });
 
             _context.SaveChanges();

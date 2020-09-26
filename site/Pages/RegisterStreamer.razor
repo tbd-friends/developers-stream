@@ -7,7 +7,9 @@
 <EditForm Model="Model" OnValidSubmit="Register">
     <div class="form-group">
         <InputText @bind-Value="Model.Name" placeholder="Real name or alias" />
-        <ValidationMessage />
+    </div>
+    <div class="form-group">
+        <InputTextArea @bind-Value="Model.Description" placeholder="What do you stream about? What sort of things can people expect?"></InputTextArea>
     </div>
     <DataAnnotationsValidator />
     <ValidationSummary />
@@ -15,6 +17,7 @@
 </EditForm>
 
 @code { 
+    
     [Inject]
     public IMediator Mediator { get; set; }
 
@@ -24,7 +27,8 @@
     {
         await Mediator.Send(new RegisterNewStreamer
         {
-            Name = Model.Name
+            Name = Model.Name,
+            Description = Model.Description
         });
     }
 
@@ -32,5 +36,7 @@
     {
         [Required]
         public string Name { get; set; }
-    }
+
+        public string Description { get; set; }
+    } 
 }
