@@ -1,3 +1,5 @@
+using application.Extensions;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -21,6 +23,8 @@ namespace site
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+
+            services.AddHandlers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

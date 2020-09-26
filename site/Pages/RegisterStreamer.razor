@@ -1,0 +1,33 @@
+﻿@page "/register-streamer"
+@using MediatR
+@using application.Commands
+<h3>Register Yourself</h3>
+
+<EditForm Model="Model" OnValidSubmit="Register">
+    <div class="form-group">
+        <input type="text" placeholder="name (real or alias)" />
+    </div>
+    <button class="btn btn-primary">Submit</button>
+</EditForm>
+
+@code { 
+    
+    [Inject]
+    public IMediator Mediator { get; set; }
+
+    public RegistrationModel Model { get; set; } = new RegistrationModel();
+
+    public async void Register()
+    {
+        await Mediator.Send(new RegisterNewStreamer
+        {
+            Name = Model.Name
+        });
+    }
+
+    public class RegistrationModel
+    {
+        public string Name { get; set; }
+    }
+
+}
