@@ -1,12 +1,16 @@
 ﻿@page "/register-streamer"
 @using MediatR
 @using application.Commands
+@using System.ComponentModel.DataAnnotations
 <h3>Register Yourself</h3>
 
 <EditForm Model="Model" OnValidSubmit="Register">
     <div class="form-group">
         <InputText @bind-Value="Model.Name" placeholder="Real name or alias" />
+        <ValidationMessage />
     </div>
+    <DataAnnotationsValidator />
+    <ValidationSummary />
     <button class="btn btn-primary">Submit</button>
 </EditForm>
 
@@ -26,6 +30,7 @@
 
     public class RegistrationModel
     {
+        [Required]
         public string Name { get; set; }
     }
 }
