@@ -5,13 +5,12 @@
 
 <EditForm Model="Model" OnValidSubmit="Register">
     <div class="form-group">
-        <input type="text" placeholder="name (real or alias)" />
+        <InputText @bind-Value="Model.Name" placeholder="Real name or alias" />
     </div>
     <button class="btn btn-primary">Submit</button>
 </EditForm>
 
 @code { 
-    
     [Inject]
     public IMediator Mediator { get; set; }
 
@@ -29,5 +28,4 @@
     {
         public string Name { get; set; }
     }
-
 }

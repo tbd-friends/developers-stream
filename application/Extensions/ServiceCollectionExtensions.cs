@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using MediatR;
+﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace application.Extensions
@@ -8,7 +7,7 @@ namespace application.Extensions
     {
         public static void AddHandlers(this IServiceCollection collection)
         {
-            collection.AddMediatR(typeof(ServiceCollection).Assembly);
+            collection.AddMediatR(typeof(ServiceCollectionExtensions).Assembly);
         }
     }
 }

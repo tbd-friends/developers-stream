@@ -1,7 +1,9 @@
 using application.Extensions;
+using core;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,6 +25,11 @@ namespace site
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+
+            services.AddDbContext<ApplicationContext>(ctx =>
+                ctx.UseSqlServer(Configuration.GetConnectionString("application")));
+
+            services.AddScoped<IApplicationContext, ApplicationContext>();
 
             services.AddHandlers();
         }
