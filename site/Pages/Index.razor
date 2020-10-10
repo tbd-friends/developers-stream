@@ -10,9 +10,10 @@
 
 @if (PagedResult != null)
 {
-    foreach (var stream in PagedResult.Results)
-    {
-        <div class="card">
+    <div class="card-columns">
+        @foreach (var stream in PagedResult.Results)
+        {
+            <div class="card">
                 <!--<img class="card-img-top" src="@stream.ProfilePicture" alt="Profile">-->
                 <div class="card-body">
                     <h5 class="card-title">@stream.Name</h5>
@@ -20,7 +21,8 @@
                     <!--<a href="@stream.Url" class="btn btn-primary">Go to channel</a>-->
                 </div>
             </div>
-    }
+        }
+    </div>
     <div>
         @for (int page = 1; page < (Math.Ceiling((float)PagedResult.TotalItems / PageSize) + 1); page++)
         {
