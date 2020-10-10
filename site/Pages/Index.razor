@@ -8,9 +8,9 @@
     <input class="form-control" type="text" placeholder="search" @oninput="InputChanged" />
 </div>
 
-@if (Streams != null)
+@if (PagedResult != null)
 {
-    foreach (var stream in Streams)
+    foreach (var stream in PagedResult.Results)
     {
         <div class="card">
             <div class="card-title">@stream.Name</div>
@@ -19,6 +19,13 @@
             </div>
         </div>
     }
+    <div>
+        @for (int page = 1; page < (Math.Ceiling((float)PagedResult.TotalItems / PageSize) + 1); page++)
+        {
+            int currentPage = page;
+            <button @onclick="(() => ChangePage(currentPage))">@(currentPage)</button>
+        }
+    </div>
 }
 
 <a href="/register-streamer">Register!</a>
@@ -26,15 +33,16 @@
 @code
 {
     [Inject]
-    public IMediator Mediator { get; set; }
+    private IMediator Mediator { get; set; }
+    private PagedResult<StreamViewModel> PagedResult { get; set; }
 
-    public IEnumerable<StreamViewModel> Streams { get; set; }
     private string Term { get; set; }
     private Timer _timer;
+    public int PageSize = 3;
 
     protected override async Task OnInitializedAsync()
     {
-        Streams = await Mediator.Send(new GetStreams());
+        PagedResult = await Mediator.Send(new GetStreams() { PageNumber = 1, PageSize = PageSize });
     }
 
     protected void InputChanged(ChangeEventArgs args)
@@ -62,6 +70,14 @@
         });
     }
 
+    private void ChangePage(int pageNumber)
+    {
+        InvokeAsync(async () =>
+        {
+            PagedResult = await Mediator.Send(new GetStreams { Term = Term, PageNumber = pageNumber, PageSize = PageSize });
+        });
+    }
+
     protected async Task DoSearch()
     {
         _timer.Elapsed -= ExecuteSearch;
@@ -71,7 +87,7 @@
 
         await InvokeAsync(async () =>
         {
-            Streams = await Mediator.Send(new GetStreams() { Term = Term });
+            PagedResult = await Mediator.Send(new GetStreams { Term = Term, PageNumber = 1, PageSize = PageSize });
 
             StateHasChanged();
         });

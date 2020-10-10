@@ -1,15 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using core;
 using MediatR;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using viewmodels;
 
 namespace application.Query.Handlers
 {
-    public class GetStreamsHandler : IRequestHandler<GetStreams, IEnumerable<StreamViewModel>>
+    public class GetStreamsHandler : IRequestHandler<GetStreams, PagedResult<StreamViewModel>>
     {
         private readonly IApplicationContext _context;
 
@@ -18,7 +16,7 @@ namespace application.Query.Handlers
             _context = context;
         }
 
-        public Task<IEnumerable<StreamViewModel>> Handle(GetStreams request, CancellationToken cancellationToken)
+        public Task<PagedResult<StreamViewModel>> Handle(GetStreams request, CancellationToken cancellationToken)
         {
             var streams = from stream in _context.Streamers
                           select new StreamViewModel
@@ -36,7 +34,13 @@ namespace application.Query.Handlers
                           select stream;
             }
 
-            return Task.FromResult(streams.AsEnumerable());
+            return Task.FromResult(
+                new PagedResult<StreamViewModel>
+                {
+                    TotalItems = streams.Count(),
+                    Results = streams.Skip((request.PageNumber - 1) * request.PageSize).Take(request.PageSize)
+                        .AsEnumerable()
+                });
         }
     }
 }
