@@ -6,15 +6,19 @@
 
 @if (Streams != null)
 {
-    foreach (var stream in Streams)
-    {
-        <div class="card">
-            <div class="card-title">@stream.Name</div>
-            <div class="card-body">
-                @stream.Description
+    <div class="card-columns">
+        foreach (var stream in Streams)
+        {
+            <div class="card">
+                <!--<img class="card-img-top" src="@stream.ProfilePicture" alt="Profile">-->
+                <div class="card-body">
+                    <h5 class="card-title">@stream.Name</h5>
+                    <p class="card-text">@stream.Description</p>
+                    <!--<a href="@stream.Url" class="btn btn-primary">Go to channel</a>-->
+                </div>
             </div>
-        </div>
-    }
+        }
+    </div>
 }
 
 <a href="/register-streamer">Register!</a>
