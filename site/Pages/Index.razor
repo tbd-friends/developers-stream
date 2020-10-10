@@ -1,3 +1,99 @@
 ﻿@page "/"
+@using MediatR
+@using viewmodels
+@using application.Query
+@using System.Timers
+
+<div class="form-group">
+    <input class="form-control" type="text" placeholder="search" @oninput="InputChanged" />
+</div>
+
+@if (PagedResult != null)
+{
+    <div class="card-columns">
+        @foreach (var stream in PagedResult.Results)
+        {
+            <div class="card">
+                <!--<img class="card-img-top" src="@stream.ProfilePicture" alt="Profile">-->
+                <div class="card-body">
+                    <h5 class="card-title">@stream.Name</h5>
+                    <p class="card-text">@stream.Description</p>
+                    <!--<a href="@stream.Url" class="btn btn-primary">Go to channel</a>-->
+                </div>
+            </div>
+        }
+    </div>
+    <div>
+        @for (int page = 1; page < (Math.Ceiling((float)PagedResult.TotalItems / PageSize) + 1); page++)
+        {
+            int currentPage = page;
+            <button @onclick="(() => ChangePage(currentPage))">@(currentPage)</button>
+        }
+    </div>
+}
 
 <a href="/register-streamer">Register!</a>
+
+@code
+{
+    [Inject]
+    private IMediator Mediator { get; set; }
+    private PagedResult<StreamViewModel> PagedResult { get; set; }
+
+    private string Term { get; set; }
+    private Timer _timer;
+    public int PageSize = 3;
+
+    protected override async Task OnInitializedAsync()
+    {
+        PagedResult = await Mediator.Send(new GetStreams() { PageNumber = 1, PageSize = PageSize });
+    }
+
+    protected void InputChanged(ChangeEventArgs args)
+    {
+        Term = (string)args.Value;
+
+        if (_timer != null)
+        {
+            _timer.Enabled = false;
+            _timer.Elapsed -= ExecuteSearch;
+            _timer.Stop();
+            _timer = null;
+        }
+
+        _timer = new Timer { Interval = 1000, AutoReset = false };
+        _timer.Elapsed += ExecuteSearch;
+        _timer.Start();
+    }
+
+    private void ExecuteSearch(object sender, EventArgs args)
+    {
+        InvokeAsync(async () =>
+        {
+            await DoSearch();
+        });
+    }
+
+    private void ChangePage(int pageNumber)
+    {
+        InvokeAsync(async () =>
+        {
+            PagedResult = await Mediator.Send(new GetStreams { Term = Term, PageNumber = pageNumber, PageSize = PageSize });
+        });
+    }
+
+    protected async Task DoSearch()
+    {
+        _timer.Elapsed -= ExecuteSearch;
+        _timer.Enabled = false;
+        _timer.Stop();
+        _timer = null;
+
+        await InvokeAsync(async () =>
+        {
+            PagedResult = await Mediator.Send(new GetStreams { Term = Term, PageNumber = 1, PageSize = PageSize });
+
+            StateHasChanged();
+        });
+    }
+}
