@@ -2,7 +2,11 @@
 @using MediatR
 @using viewmodels
 @using application.Query
+@using System.Timers
 
+<div class="form-group">
+    <input class="form-control" type="text" placeholder="search" @oninput="InputChanged" />
+</div>
 
 @if (Streams != null)
 {
@@ -25,9 +29,51 @@
     public IMediator Mediator { get; set; }
 
     public IEnumerable<StreamViewModel> Streams { get; set; }
+    private string Term { get; set; }
+    private Timer _timer;
 
     protected override async Task OnInitializedAsync()
     {
         Streams = await Mediator.Send(new GetStreams());
+    }
+
+    protected void InputChanged(ChangeEventArgs args)
+    {
+        Term = (string)args.Value;
+
+        if (_timer != null)
+        {
+            _timer.Enabled = false;
+            _timer.Elapsed -= ExecuteSearch;
+            _timer.Stop();
+            _timer = null;
+        }
+
+        _timer = new Timer { Interval = 1000, AutoReset = false };
+        _timer.Elapsed += ExecuteSearch;
+        _timer.Start();
+    }
+
+    private void ExecuteSearch(object sender, EventArgs args)
+    {
+        InvokeAsync(async () =>
+        {
+            await DoSearch();
+        });
+    }
+
+    protected async Task DoSearch()
+    {
+        _timer.Elapsed -= ExecuteSearch;
+        _timer.Enabled = false;
+        _timer.Stop();
+        _timer = null;
+
+        await InvokeAsync(async () =>
+        {
+            Streams = await Mediator.Send(new GetStreams() { Term = Term });
+
+            StateHasChanged();
+        });
     }
 }

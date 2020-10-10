@@ -6,6 +6,6 @@ namespace application.Query
 {
     public class GetStreams : IRequest<IEnumerable<StreamViewModel>>
     {
-        
+        public string Term { get; set; }
     }
 }
