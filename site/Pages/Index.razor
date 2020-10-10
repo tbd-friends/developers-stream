@@ -1,3 +1,32 @@
 ﻿@page "/"
+@using MediatR
+@using viewmodels
+@using application.Query
+
+@if (Streams != null)
+{
+    foreach (var stream in Streams)
+    {
+        <div class="card">
+            <div class="card-title">@stream.Name</div>
+            <div class="card-body">
+                @stream.Description
+            </div>
+        </div>
+    }
+}
 
 <a href="/register-streamer">Register!</a>
+
+@code
+{
+    [Inject]
+    public IMediator Mediator { get; set; }
+
+    public IEnumerable<StreamViewModel> Streams { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Streams = await Mediator.Send(new GetStreams());
+    }
+}
