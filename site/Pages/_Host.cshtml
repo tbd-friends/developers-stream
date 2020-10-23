@@ -12,7 +12,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>site</title>
     <base href="~/" />
-    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
+    
+    <environment exclude="Development">
+        <link rel="stylesheet" href="css/materialize/css/materialize.min.css" />
+    </environment>
+    <environment include="Development">
+        <link rel="stylesheet" href="css/materialize/css/materialize.css" />
+    </environment>
     <link href="css/site.css" rel="stylesheet" />
 </head>
 <body>
@@ -32,5 +39,11 @@
     </div>
 
     <script src="_framework/blazor.server.js"></script>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="css/materialize/js/materialize.min.js" />
+    </environment>
+    <environment include="Development">
+        <link rel="stylesheet" href="css/materialize/js/materialize.js" />
+    </environment>
 </body>
 </html>

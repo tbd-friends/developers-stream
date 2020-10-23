@@ -1,16 +1,19 @@
 ﻿@inherits LayoutComponentBase
+@using site.Shared.Components;
 
-<div class="main">
-    <div>
-        <div class="top-row-left">
-            <h2><a href="/"><img title="developers//stream" src="images/developers_stream.svg" /></a></h2>
-        </div>
-        <div class="top-row px-4">
-            <a href="About">About</a>
-        </div>
-    </div>
-
-    <div class="content px-4">
+<header>
+    <Navbar />
+</header>
+<main>
+    <div class="container">
         @Body
     </div>
-</div>
+</main>
+<footer class="page-footer grey darken-4">
+    <div class="footer-copyright">
+        <div class="container">
+            &copy; 2020 Terry Burns-Dyson
+        </div>
+    </div>
+</footer>
+

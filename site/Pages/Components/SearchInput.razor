@@ -1,0 +1,55 @@
+﻿@using System.Timers
+<div class="row">
+    <div class="input-field col s12">
+        <input type="text" placeholder="search" @oninput="InputChanged"/>
+    </div>
+</div>
+
+@code {
+
+    private string Term { get; set; }
+    private Timer _timer;
+
+    [Parameter]
+    public EventCallback<string> OnSearchEntered { get; set; }
+
+    protected void InputChanged(ChangeEventArgs args)
+    {
+        Term = (string)args.Value;
+
+        if (_timer != null)
+        {
+            _timer.Enabled = false;
+            _timer.Elapsed -= ExecuteSearch;
+            _timer.Stop();
+            _timer = null;
+        }
+
+        _timer = new Timer { Interval = 1000, AutoReset = false };
+        _timer.Elapsed += ExecuteSearch;
+        _timer.Start();
+    }
+
+    private void ExecuteSearch(object sender, EventArgs args)
+    {
+        InvokeAsync(async () =>
+        {
+            await DoSearch();
+        });
+    }
+
+    protected async Task DoSearch()
+    {
+        _timer.Elapsed -= ExecuteSearch;
+        _timer.Enabled = false;
+        _timer.Stop();
+        _timer = null;
+
+        await InvokeAsync(async () =>
+        {
+            await OnSearchEntered.InvokeAsync(Term);
+
+            StateHasChanged();
+        });
+    }
+}

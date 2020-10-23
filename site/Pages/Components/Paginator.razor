@@ -1,0 +1,68 @@
+﻿@using viewmodels
+
+<div>
+    <ul class="pagination">
+        <li class="@DetermineActive()"><a href="#!" @onclick="(Decrement)"><i class="material-icons">chevron_left</i></a></li>
+        @for (int page = 1; page < LastPage; page++)
+        {
+            int currentPage = page;
+            <li class="@DeterminePage(currentPage)">
+                <a href="#!" @onclick="(() => SelectPage(currentPage))">@currentPage</a>
+            </li>
+        }
+        <li class="@DetermineActive(true)"><a href="#!" @onclick="(Increment)"><i class="material-icons">chevron_right</i></a></li>
+    </ul>
+</div>
+@code
+{
+    [Parameter]
+    public int TotalItems { get; set; }
+
+    [Parameter]
+    public int PageSize { get; set; }
+
+    [Parameter]
+    public int SelectedPage { get; set; } = 1;
+
+    private double LastPage => (Math.Ceiling((float)TotalItems / PageSize) + 1);
+
+    [Parameter]
+    public EventCallback<int> OnPageChanged { get; set; }
+
+    public async Task SelectPage(int page)
+    {
+        SelectedPage = page;
+
+        await OnPageChanged.InvokeAsync(page);
+    }
+
+    public string DeterminePage(int currentPage)
+    {
+        return currentPage == SelectedPage ? "active" : "waves-effect";
+    }
+
+    public async Task Increment()
+    {
+        if (SelectedPage < (LastPage - 1))
+        {
+            await SelectPage(SelectedPage + 1);
+
+            StateHasChanged();
+        }
+    }
+
+    public async Task Decrement()
+    {
+        if (SelectedPage > 1)
+        {
+            await SelectPage(SelectedPage - 1);
+
+            StateHasChanged();
+        }
+    }
+
+    public string DetermineActive(bool last = false)
+    {
+        return (!last && SelectedPage > 1) || last && (SelectedPage < LastPage - 1) ? "waves-effect" : "disabled";
+    }
+}
