@@ -9,10 +9,12 @@ namespace core
         IQueryable<AvailableTechnology> IApplicationContext.AvailableTechnologies => AvailableTechnologies;
         IQueryable<Streamer> IApplicationContext.Streamers => Streamers;
         IQueryable<StreamerPlatform> IApplicationContext.StreamerPlatforms => StreamerPlatforms;
+        IQueryable<StreamerTechnology> IApplicationContext.StreamerTechnologies => StreamerTechnologies;
 
         public DbSet<AvailableTechnology> AvailableTechnologies { get; set; }
         public DbSet<Streamer> Streamers { get; set; }
         public DbSet<StreamerPlatform> StreamerPlatforms { get; set; }
+        public DbSet<StreamerTechnology> StreamerTechnologies { get; set; }
 
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
