@@ -17,11 +17,26 @@ namespace application.Commands.Handlers
 
         public Task<Unit> Handle(RegisterNewStreamer request, CancellationToken cancellationToken)
         {
-            _context.Insert(new Streamer
+            var streamer = new Streamer
             {
                 Name = request.Name,
                 Description = request.Description
-            });
+            };
+
+            _context.Insert(streamer);
+
+            if (request.Platforms != null)
+            {
+                foreach (var platform in request.Platforms)
+                {
+                    _context.Insert(new StreamerPlatform
+                    {
+                        StreamerId = streamer.Id,
+                        Name = platform.Name,
+                        Url = platform.Url
+                    });
+                }
+            }
 
             _context.SaveChanges();
 

@@ -7,7 +7,10 @@ namespace core
     public class ApplicationContext : DbContext, IApplicationContext
     {
         IQueryable<Streamer> IApplicationContext.Streamers => Streamers;
+        IQueryable<StreamerPlatform> IApplicationContext.StreamerPlatforms => StreamerPlatforms;
+
         public DbSet<Streamer> Streamers { get; set; }
+        public DbSet<StreamerPlatform> StreamerPlatforms { get; set; }
 
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)

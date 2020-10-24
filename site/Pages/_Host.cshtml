@@ -4,7 +4,6 @@
 @{
     Layout = null;
 }
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,14 +12,18 @@
     <title>site</title>
     <base href="~/" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
-    
-    <environment exclude="Development">
-        <link rel="stylesheet" href="css/materialize/css/materialize.min.css" />
+    <link href="~/css/site.css" rel="stylesheet" />
+
+    <environment exclude="Staging,Development">
+        <link href="~/lib/materialize/css/materialize.min.css" rel="stylesheet" />
     </environment>
     <environment include="Development">
-        <link rel="stylesheet" href="css/materialize/css/materialize.css" />
+        <link href="~/lib/materialize/css/materialize.css" rel="stylesheet" />
     </environment>
-    <link href="css/site.css" rel="stylesheet" />
+
+    <link href="_content/MatBlazor/dist/matBlazor.css" rel="stylesheet" />
+
+
 </head>
 <body>
     <app>
@@ -39,11 +42,8 @@
     </div>
 
     <script src="_framework/blazor.server.js"></script>
-    <environment exclude="Development">
-        <link rel="stylesheet" href="css/materialize/js/materialize.min.js" />
-    </environment>
-    <environment include="Development">
-        <link rel="stylesheet" href="css/materialize/js/materialize.js" />
-    </environment>
+
+    <script src="_content/MatBlazor/dist/matBlazor.js"></script>
+    <script src="~/js/site.js" defer="defer"></script>
 </body>
 </html>

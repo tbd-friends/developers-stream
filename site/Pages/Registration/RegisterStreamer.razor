@@ -1,0 +1,64 @@
+﻿@page "/register-streamer"
+@using MediatR
+@using application.Commands
+@using System.ComponentModel.DataAnnotations
+@using site.Models
+@using site.Pages.Registration.PlatformSelection;
+
+<h3>Register Streamer</h3>
+
+<div class="row">
+    <EditForm Model="Model" OnValidSubmit="Register">
+        <div class="col s12">
+            <MatInputTextComponent @bind-Value="Model.Name"
+                                   Label="Real name or alias"
+                                   FullWidth="true"
+                                   class="validate" />
+        </div>
+        <div class="col s12">
+            <MatTextField @bind-Value="Model.Description"
+                          Label="What do you stream about? What sort of things can people expect?"
+                          FullWidth="true"
+                          TextArea="true"
+                          class="materialize-textarea"></MatTextField>
+        </div>
+        <div class="col s12">
+            <PlatformList @bind-Platforms="Model.Platforms" />
+        </div>
+        <div>
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+        </div>
+        <div>
+            <button class="btn btn-primary">Submit</button>
+        </div>
+    </EditForm>
+</div>
+@code {
+
+    [Inject]
+    public IMediator Mediator { get; set; }
+
+    public RegistrationModel Model { get; set; } = new RegistrationModel();
+
+    public async void Register()
+    {
+        await Mediator.Send(new RegisterNewStreamer
+        {
+            Name = Model.Name,
+            Description = Model.Description,
+            Platforms = Model.Platforms.Select(m => new RegisterNewStreamer.Platform { Name = m.Name, Url = m.Url })
+        });
+    }
+
+    public class RegistrationModel
+    {
+        [Required]
+        public string Name { get; set; }
+
+        public string Description { get; set; }
+
+        [Required]
+        public List<Platform> Platforms { get; set; } = new List<Platform>();
+    }
+}

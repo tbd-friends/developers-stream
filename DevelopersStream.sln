@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{21FC349D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "application.tests", "tests\application.tests\application.tests.csproj", "{8B347E08-2ED1-47D2-AAC8-F56AADC7F7FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "viewmodels", "viewmodels\viewmodels.csproj", "{BB2646CB-9C73-49DA-955D-1E1B25944B0F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "viewmodels", "viewmodels\viewmodels.csproj", "{BB2646CB-9C73-49DA-955D-1E1B25944B0F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,0 +1,80 @@
+﻿@using site.Models
+@using System.Resources
+
+<div class="row">
+
+    <div class="col s8 l2">
+        <MatSelectValue Items="@AvailablePlatforms"
+                        @bind-Value="Model.PlatformName"
+                        ValueSelector="@(i => i.Value)"
+                        FullWidth="true"
+                        Label="Platform">
+            <ItemTemplate>
+                @context?.Name
+            </ItemTemplate>
+        </MatSelectValue>
+    </div>
+    <div class="col s12 l6">
+        <MatInputTextComponent @bind-Value="@Model.Url" Label="Url" FullWidth="true" />
+    </div>
+    <div class="col s12 l4">
+        <MatIconButton OnClick="AddPlatform"
+                       Icon="add"
+                       Style="margin: 4px auto;"
+                       OnClickStopPropagation="true"
+                       class="light-blue accent-3"></MatIconButton>
+    </div>
+</div>
+
+@code
+{
+    [Parameter]
+    public EventCallback<Platform> OnPlatformAdded { get; set; }
+
+    public UrlModel Model { get; set; } = new UrlModel();
+
+    public class UrlModel
+    {
+        public string Url { get; set; }
+        public string PlatformName { get; set; }
+
+        public bool IsValid => !string.IsNullOrEmpty(Url) && !string.IsNullOrEmpty(PlatformName);
+    }
+
+    public class PlatformItem
+    {
+        public string Name { get; set; }
+        public string Value { get; set; }
+        public string Prefix { get; set; }
+    }
+
+    public PlatformItem[] AvailablePlatforms = {
+        new PlatformItem {Name = "Twitch", Value = "twitch", Prefix = "https://twitch.tv/"},
+        new PlatformItem {Name = "YouTube", Value = "youtube", Prefix = "https://youtube.com/"}
+    };
+
+    public async Task AddPlatform()
+    {
+        if (Model.IsValid)
+        {
+            await OnPlatformAdded.InvokeAsync(new Platform { Name = Model.PlatformName, Url = Model.Url });
+
+            await Reset();
+        }
+    }
+
+    public async Task Reset()
+    {
+        await InvokeAsync(() =>
+        {
+            Model = new UrlModel();
+
+            StateHasChanged();
+        });
+    }
+
+    public void UpdateInputField(string field)
+    {
+
+    }
+}

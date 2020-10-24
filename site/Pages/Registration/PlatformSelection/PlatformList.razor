@@ -1,0 +1,34 @@
+﻿@using site.Models
+
+<div class="row">
+    <PlatformInput OnPlatformAdded="OnPlatformAdded" />
+</div>
+<div class="row">
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title">Selected Platforms</span>
+            <ul>
+                @foreach (var platform in Platforms)
+                {
+                    <li>@(platform.Url) [@platform.Name]</li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+@code
+{
+    [Parameter]
+    public List<Platform> Platforms { get; set; }
+
+    [Parameter]
+    public EventCallback<List<Platform>> PlatformsChanged { get; set; }
+
+
+    protected void OnPlatformAdded(Platform platform)
+    {
+        Platforms.Add(platform);
+
+        PlatformsChanged.InvokeAsync(Platforms);
+    }
+}
