@@ -4,6 +4,7 @@
 @using System.ComponentModel.DataAnnotations
 @using site.Models
 @using site.Pages.Registration.PlatformSelection;
+@using site.Pages.Registration.TechnologySelection;
 @using Syncfusion.Blazor.Inputs
 
 <h3>Register Streamer</h3>
@@ -23,6 +24,9 @@
         </div>
         <div class="col s12">
             <PlatformList @bind-Platforms="Model.Platforms" />
+        </div>
+        <div class="col s12">
+            <SelectTechnology SelectedTechnologies="Model.Technologies" />
         </div>
         <div>
             <DataAnnotationsValidator />
@@ -52,11 +56,12 @@
 
     public class RegistrationModel
     {
-        
+
         public string Name { get; set; }
 
         public string Description { get; set; }
 
         public List<Platform> Platforms { get; set; } = new List<Platform>();
+        public Guid[] Technologies { get; set; } = { };
     }
 }

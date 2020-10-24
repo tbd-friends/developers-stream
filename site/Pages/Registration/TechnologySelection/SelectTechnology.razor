@@ -1,0 +1,28 @@
+﻿@using MediatR
+@using application.Query
+@using viewmodels
+
+<SfMultiSelect TValue="Guid[]"
+               @bind-Value="SelectedTechnologies"
+               Mode="@VisualMode.Default"
+               Placeholder="Technologies"
+               DataSource="@Technologies">
+    <MultiSelectFieldSettings Text="Description" Value="Id"></MultiSelectFieldSettings>
+</SfMultiSelect>
+
+@code {
+    [Inject]
+    public IMediator Mediator { get; set; }
+
+    public IEnumerable<TechnologyViewModel> Technologies { get; set; }
+
+    [Parameter]
+    public Guid[] SelectedTechnologies { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Technologies = await Mediator.Send(new GetAvailableTechnologies());
+
+        await base.OnInitializedAsync();
+    }
+}

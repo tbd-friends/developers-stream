@@ -5,6 +5,7 @@ namespace core
 {
     public interface IApplicationContext
     {
+        IQueryable<AvailableTechnology> AvailableTechnologies { get; }
         IQueryable<Streamer> Streamers { get; }
         IQueryable<StreamerPlatform> StreamerPlatforms { get; }
 
