@@ -4,23 +4,22 @@
 @using System.ComponentModel.DataAnnotations
 @using site.Models
 @using site.Pages.Registration.PlatformSelection;
+@using Syncfusion.Blazor.Inputs
 
 <h3>Register Streamer</h3>
 
 <div class="row">
     <EditForm Model="Model" OnValidSubmit="Register">
         <div class="col s12">
-            <MatInputTextComponent @bind-Value="Model.Name"
-                                   Label="Real name or alias"
-                                   FullWidth="true"
-                                   class="validate" />
+            <SfTextBox @bind-Value="Model.Name"
+                       FloatLabelType="FloatLabelType.Auto"
+                       Placeholder="Real Name or Alias" />
         </div>
         <div class="col s12">
-            <MatTextField @bind-Value="Model.Description"
-                          Label="What do you stream about? What sort of things can people expect?"
-                          FullWidth="true"
-                          TextArea="true"
-                          class="materialize-textarea"></MatTextField>
+            <SfTextBox @bind-Value="Model.Description"
+                       FloatLabelType="FloatLabelType.Auto"
+                       Placeholder="What do you stream about? What sort of things can people expect?"
+                       Multiline="true" />
         </div>
         <div class="col s12">
             <PlatformList @bind-Platforms="Model.Platforms" />
@@ -53,12 +52,11 @@
 
     public class RegistrationModel
     {
-        [Required]
+        
         public string Name { get; set; }
 
         public string Description { get; set; }
 
-        [Required]
         public List<Platform> Platforms { get; set; } = new List<Platform>();
     }
 }

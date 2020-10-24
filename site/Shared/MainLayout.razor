@@ -1,30 +1,36 @@
 ﻿@inherits LayoutComponentBase
 @using site.Shared.Components;
 
+<header>
+    <Navbar />
+</header>
 <main>
-    <MatAppBarContainer>
-        <MatAppBar class="grey darken-3">
-            <MatAppBarRow>
-                <MatAppBarSection>
-                    <MatAppBarTitle><a href="/"><img title="developers//stream" src="images/developers_stream.svg" /></a></MatAppBarTitle>
-                </MatAppBarSection>
-                <MatAppBarSection Align="@MatAppBarSectionAlign.End">
-                    <MatButton TrailingIcon="login"
-                               Raised="true"
-                               class="light-green darken-3 waves-effect margin-left-right-2">Login</MatButton>
-                    <MatButton TrailingIcon="create"
-                               Raised="true"
-                               Link="/register-streamer"
-                               class="light-blue darken-3 waves-effect margin-left-right-2">Sign-Up</MatButton>
-                </MatAppBarSection>
-            </MatAppBarRow>
-        </MatAppBar>
-        <MatAppBarContent>
-            <div class="container">
-                @Body
-            </div>
-        </MatAppBarContent>
-    </MatAppBarContainer>
+    <div class="container">
+        @Body
+    </div>
+    @*<MatAppBarContainer>
+            <MatAppBar class="grey darken-3">
+                <MatAppBarRow>
+                    <MatAppBarSection>
+                        <MatAppBarTitle><a href="/"><img title="developers//stream" src="images/developers_stream.svg" /></a></MatAppBarTitle>
+                    </MatAppBarSection>
+                    <MatAppBarSection Align="@MatAppBarSectionAlign.End">
+                        <MatButton TrailingIcon="login"
+                                   Raised="true"
+                                   class="light-green darken-3 waves-effect margin-left-right-2">Login</MatButton>
+                        <MatButton TrailingIcon="create"
+                                   Raised="true"
+                                   Link="/register-streamer"
+                                   class="light-blue darken-3 waves-effect margin-left-right-2">Sign-Up</MatButton>
+                    </MatAppBarSection>
+                </MatAppBarRow>
+            </MatAppBar>
+            <MatAppBarContent>
+                <div class="container">
+                    @Body
+                </div>
+            </MatAppBarContent>
+        </MatAppBarContainer>*@
 </main>
 <footer class="page-footer grey darken-4">
     <div class="footer-copyright">

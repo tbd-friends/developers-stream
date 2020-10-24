@@ -1,31 +1,23 @@
 ﻿@using site.Models
 @using System.Resources
 @using site.Pages.Registration.PlatformSelection.Models
-@inject IJSRuntime js;
+@using Syncfusion.Blazor.DropDowns;
+@using Syncfusion.Blazor.Inputs;
+@using Syncfusion.Blazor.Buttons;
 
-<div class="row">
-
-    <div class="col s8 l2">
-        <MatSelectValue Items="@AvailablePlatforms"
-                        @bind-Value="Model.PlatformName"
-                        ValueSelector="@(i => i.Value)"
-                        FullWidth="true"
-                        Label="Platform"
-                        @ref="@_selectField">
-            <ItemTemplate>
-                @context?.Name
-            </ItemTemplate>
-        </MatSelectValue>
+<div>
+    <div>
+        <SfDropDownList TValue="string" TItem="PlatformItem"
+                        Placeholder="Select a game" @bind-Value="@Model.PlatformName"
+                        DataSource="AvailablePlatforms">
+            <DropDownListFieldSettings Text="Name" Value="Value"></DropDownListFieldSettings>
+        </SfDropDownList>
     </div>
-    <div class="col s12 l6">
-        <MatInputTextComponent @bind-Value="@Model.Url" Label="Url" FullWidth="true" @ref="@_urlField" />
+    <div>
+        <SfTextBox @bind-Value="@Model.Url" Placeholder="Url" FloatLabelType="FloatLabelType.Auto" />
     </div>
-    <div class="col s12 l4">
-        <MatIconButton OnClick="AddPlatform"
-                       Icon="add"
-                       Style="margin: 4px auto;"
-                       OnClickStopPropagation="true"
-                       class="light-blue accent-3"></MatIconButton>
+    <div>
+        <SfButton OnClick="AddPlatform" IsPrimary="true">Add</SfButton>
     </div>
 </div>
 
@@ -34,9 +26,6 @@
     [Parameter]
     public EventCallback<Platform> OnPlatformAdded { get; set; }
     public UrlModel Model { get; set; } = new UrlModel();
-    private MatInputTextComponent<string> _urlField;
-    private MatSelectValue<string, PlatformItem> _selectField;
-
 
     public PlatformItem[] AvailablePlatforms =
     {
@@ -44,7 +33,7 @@
         new PlatformItem {Name = "YouTube", Value = "youtube", Prefix = "https://youtube.com/"},
         new PlatformItem {Name = "Facebook", Value = "facebook", Prefix = "https://facebook.com/"},
         new PlatformItem {Name = "Website", Value = "website"},
-        new PlatformItem {Name = "Dev.To", Value = "devto", Prefix = "https://dev.to"}
+        new PlatformItem {Name = "Dev.To", Value = "devto", Prefix = "https://dev.to/"}
     };
 
     public async Task AddPlatform()
@@ -62,8 +51,6 @@
         await InvokeAsync(() =>
         {
             Model = new UrlModel();
-
-            js.InvokeVoidAsync("focusElement", _urlField.Id);
 
             StateHasChanged();
         });

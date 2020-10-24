@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Syncfusion.Blazor;
 
 namespace site
 {
@@ -30,6 +31,10 @@ namespace site
                 ctx.UseSqlServer(Configuration.GetConnectionString("application")));
 
             services.AddScoped<IApplicationContext, ApplicationContext>();
+
+            services.AddSyncfusionBlazor();
+
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(Configuration["syncfusion:license"]);
 
             services.AddHandlers();
         }
