@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Threading;
+﻿using System.Threading;
 using application.Commands;
 using application.Commands.Handlers;
 using core;
@@ -7,7 +6,7 @@ using core.Models;
 using Moq;
 using Xunit;
 
-namespace application.tests
+namespace application.tests.when_a_new_streamer_is_registering
 {
     public class when_name_and_description_are_provided
     {

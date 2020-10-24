@@ -6,7 +6,7 @@ using core.Models;
 using Moq;
 using Xunit;
 
-namespace application.tests
+namespace application.tests.when_a_new_streamer_is_registering
 {
     public class when_name_is_provided_and_no_platforms
     {

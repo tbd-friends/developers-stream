@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using core;
 using core.Models;
 using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace application.Commands.Handlers
 {
@@ -34,6 +35,18 @@ namespace application.Commands.Handlers
                         StreamerId = streamer.Id,
                         Name = platform.Name,
                         Url = platform.Url
+                    });
+                }
+            }
+
+            if (request.Technologies != null)
+            {
+                foreach (var technology in request.Technologies)
+                {
+                    _context.Insert(new StreamerTechnology
+                    {
+                        StreamerId = streamer.Id,
+                        TechnologyId = technology
                     });
                 }
             }

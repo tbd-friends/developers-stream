@@ -26,7 +26,7 @@
             <PlatformList @bind-Platforms="Model.Platforms" />
         </div>
         <div class="col s12">
-            <SelectTechnology SelectedTechnologies="Model.Technologies" />
+            <SelectTechnology @bind-SelectedTechnologies="Model.Technologies" />
         </div>
         <div>
             <DataAnnotationsValidator />
@@ -50,7 +50,8 @@
         {
             Name = Model.Name,
             Description = Model.Description,
-            Platforms = Model.Platforms.Select(m => new RegisterNewStreamer.Platform { Name = m.Name, Url = m.Url })
+            Platforms = Model.Platforms.Select(m => new RegisterNewStreamer.Platform { Name = m.Name, Url = m.Url }),
+            Technologies = Model.Technologies
         });
     }
 
@@ -62,6 +63,6 @@
         public string Description { get; set; }
 
         public List<Platform> Platforms { get; set; } = new List<Platform>();
-        public Guid[] Technologies { get; set; } = { };
+        public Guid[] Technologies { get; set; }
     }
 }

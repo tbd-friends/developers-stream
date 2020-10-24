@@ -3,13 +3,13 @@
 @using viewmodels
 
 <SfMultiSelect TValue="Guid[]"
-               @bind-Value="SelectedTechnologies"
+               Value="SelectedTechnologies"
+               ValueChanged="(value) => SelectedTechnologiesChanged.InvokeAsync(value)"
                Mode="@VisualMode.Default"
                Placeholder="Technologies"
                DataSource="@Technologies">
     <MultiSelectFieldSettings Text="Description" Value="Id"></MultiSelectFieldSettings>
 </SfMultiSelect>
-
 @code {
     [Inject]
     public IMediator Mediator { get; set; }
@@ -19,10 +19,14 @@
     [Parameter]
     public Guid[] SelectedTechnologies { get; set; }
 
+    [Parameter]
+    public EventCallback<Guid[]> SelectedTechnologiesChanged { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         Technologies = await Mediator.Send(new GetAvailableTechnologies());
 
         await base.OnInitializedAsync();
     }
+
 }

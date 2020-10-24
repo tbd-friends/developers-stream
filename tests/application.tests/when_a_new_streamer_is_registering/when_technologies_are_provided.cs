@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using application.Commands;
 using application.Commands.Handlers;
 using core;
@@ -8,14 +9,16 @@ using Xunit;
 
 namespace application.tests.when_a_new_streamer_is_registering
 {
-    public class when_name_is_provided_and_no_description
+    public class when_technologies_are_provided
     {
+        private readonly Guid TechnologyToBeAdded = new Guid("15F18A34-D08F-4FA9-AEE4-BCF89C3B9426");
+
         private RegisterNewStreamerHandler _subject;
         private Mock<IApplicationContext> _context;
 
         public readonly string StreamerName = "streamer-name";
 
-        public when_name_is_provided_and_no_description()
+        public when_technologies_are_provided()
         {
             Arrange();
 
@@ -32,7 +35,11 @@ namespace application.tests.when_a_new_streamer_is_registering
         {
             _subject.Handle(new RegisterNewStreamer
             {
-                Name = StreamerName
+                Name = StreamerName,
+                Technologies = new[]
+                {
+                    TechnologyToBeAdded,
+                }
             }, CancellationToken.None);
         }
 
@@ -42,6 +49,14 @@ namespace application.tests.when_a_new_streamer_is_registering
             _context.Verify(ctx =>
                 ctx.Insert(It.Is<Streamer>(
                     s => s.Name == StreamerName)), Times.Once);
+        }
+
+        [Fact]
+        public void streamer_technology_is_registered()
+        {
+            _context.Verify(ctx =>
+                    ctx.Insert(It.Is<StreamerTechnology>(st => st.TechnologyId == TechnologyToBeAdded)),
+                Times.Once);
         }
 
         [Fact]
