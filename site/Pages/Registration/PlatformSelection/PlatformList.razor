@@ -1,19 +1,17 @@
 ﻿@using site.Models
 
-<div class="row">
-    <PlatformInput OnPlatformAdded="OnPlatformAdded" />
-</div>
-<div class="row">
-    <div class="card">
-        <div class="card-content">
-            <span class="card-title">Selected Platforms</span>
-            <ul>
-                @foreach (var platform in Platforms)
-                {
-                    <li>@(platform.Url) [@platform.Name]</li>
-                }
-            </ul>
+<div class="card">
+    <div class="card-content">
+        <span class="card-title">Platforms</span>
+        <div class="row">
+            <PlatformInput OnPlatformAdded="OnPlatformAdded" />
         </div>
+        <ul>
+            @foreach (var platform in Platforms)
+            {
+                <li>@(platform.Url) [@platform.Name]</li>
+            }
+        </ul>
     </div>
 </div>
 @code

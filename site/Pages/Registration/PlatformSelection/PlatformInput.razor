@@ -1,5 +1,7 @@
 ﻿@using site.Models
 @using System.Resources
+@using site.Pages.Registration.PlatformSelection.Models
+@inject IJSRuntime js;
 
 <div class="row">
 
@@ -8,14 +10,15 @@
                         @bind-Value="Model.PlatformName"
                         ValueSelector="@(i => i.Value)"
                         FullWidth="true"
-                        Label="Platform">
+                        Label="Platform"
+                        @ref="@_selectField">
             <ItemTemplate>
                 @context?.Name
             </ItemTemplate>
         </MatSelectValue>
     </div>
     <div class="col s12 l6">
-        <MatInputTextComponent @bind-Value="@Model.Url" Label="Url" FullWidth="true" />
+        <MatInputTextComponent @bind-Value="@Model.Url" Label="Url" FullWidth="true" @ref="@_urlField" />
     </div>
     <div class="col s12 l4">
         <MatIconButton OnClick="AddPlatform"
@@ -30,27 +33,18 @@
 {
     [Parameter]
     public EventCallback<Platform> OnPlatformAdded { get; set; }
-
     public UrlModel Model { get; set; } = new UrlModel();
+    private MatInputTextComponent<string> _urlField;
+    private MatSelectValue<string, PlatformItem> _selectField;
 
-    public class UrlModel
+
+    public PlatformItem[] AvailablePlatforms =
     {
-        public string Url { get; set; }
-        public string PlatformName { get; set; }
-
-        public bool IsValid => !string.IsNullOrEmpty(Url) && !string.IsNullOrEmpty(PlatformName);
-    }
-
-    public class PlatformItem
-    {
-        public string Name { get; set; }
-        public string Value { get; set; }
-        public string Prefix { get; set; }
-    }
-
-    public PlatformItem[] AvailablePlatforms = {
         new PlatformItem {Name = "Twitch", Value = "twitch", Prefix = "https://twitch.tv/"},
-        new PlatformItem {Name = "YouTube", Value = "youtube", Prefix = "https://youtube.com/"}
+        new PlatformItem {Name = "YouTube", Value = "youtube", Prefix = "https://youtube.com/"},
+        new PlatformItem {Name = "Facebook", Value = "facebook", Prefix = "https://facebook.com/"},
+        new PlatformItem {Name = "Website", Value = "website"},
+        new PlatformItem {Name = "Dev.To", Value = "devto", Prefix = "https://dev.to"}
     };
 
     public async Task AddPlatform()
@@ -69,12 +63,9 @@
         {
             Model = new UrlModel();
 
+            js.InvokeVoidAsync("focusElement", _urlField.Id);
+
             StateHasChanged();
         });
-    }
-
-    public void UpdateInputField(string field)
-    {
-
     }
 }

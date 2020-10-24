@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <Folder Include="Data\" />
+    <Folder Include="Pages\Registration\TechnologySelection\Models\" />
     <Folder Include="wwwroot\lib\" />
   </ItemGroup>
 
