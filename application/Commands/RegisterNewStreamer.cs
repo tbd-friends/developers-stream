@@ -8,9 +8,11 @@ namespace application.Commands
     public class RegisterNewStreamer : IRequest
     {
         public string Name { get; set; }
+        public string Email { get; set; }
         public string Description { get; set; }
         public IEnumerable<Platform> Platforms { get; set; }
         public IEnumerable<Guid> Technologies { get; set; }
+        
 
         public class Platform
         {

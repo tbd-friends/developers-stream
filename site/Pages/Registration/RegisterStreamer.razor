@@ -2,6 +2,8 @@
 @using MediatR
 @using application.Commands
 @using System.ComponentModel.DataAnnotations
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Http
 @using site.Models
 @using site.Pages.Registration.PlatformSelection;
 @using site.Pages.Registration.TechnologySelection;
@@ -10,7 +12,33 @@
 <h3>Register Streamer</h3>
 
 <div class="row">
+    <AuthorizeView>
+        <NotAuthorized>
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-title">Login</div>
+                    <p>If you are registering your own streams, consider logging in. This will allow you to update the profile information after it is entered.</p>
+                    <a target="_self" href="login?redirectUri=/register-streamer" class="btn light-blue waves-effect waves-light">Login</a>
+                </div>
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
     <EditForm Model="Model" OnValidSubmit="Register">
+        <AuthorizeView Context="login">
+            <Authorized>
+                <div class="col s12">
+                    <SfTextBox Value="@(login.User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.Email)?.Value)"
+                               Readonly="true"
+                               Placeholder="Email Address"
+                               FloatLabelType="FloatLabelType.Auto" />
+                </div>
+            </Authorized>
+            <NotAuthorized>
+                <SfTextBox @bind-Value="Model.Email"
+                           Placeholder="Email Address"
+                           FloatLabelType="FloatLabelType.Auto" />
+            </NotAuthorized>
+        </AuthorizeView>
         <div class="col s12">
             <SfTextBox @bind-Value="Model.Name"
                        FloatLabelType="FloatLabelType.Auto"
@@ -18,9 +46,12 @@
         </div>
         <div class="col s12">
             <SfTextBox @bind-Value="Model.Description"
-                        FloatLabelType="FloatLabelType.Auto"
-                        Placeholder="What do you stream about? What sort of things can people expect?"
-                        Multiline="true" />
+                       FloatLabelType="FloatLabelType.Auto"
+                       Placeholder="What do you stream about? What sort of things can people expect?"
+                       Multiline="true" />
+        </div>
+        <div class="col s12">
+            <SfCheckBox @bind-Checked="Model.IsStreamer" Label="Are you the streamer being registered?" />
         </div>
         <div class="col s12">
             <h5>Platforms</h5>
@@ -28,7 +59,7 @@
         </div>
         <div class="col s12">
             <h5>Technologies</h5>
-            <SelectTechnology @bind-SelectedTechnologies="Model.Technologies"/>
+            <SelectTechnology @bind-SelectedTechnologies="Model.Technologies" />
         </div>
         <div class="col s12">
             <DataAnnotationsValidator />
@@ -43,14 +74,20 @@
 
     [Inject]
     public IMediator Mediator { get; set; }
+    [Inject]
+    public AuthenticationStateProvider AuthenticationProvider { get; set; }
 
     public RegistrationModel Model { get; set; } = new RegistrationModel();
 
     public async void Register()
     {
+        string email = Model.Email ??
+                       (await AuthenticationProvider.GetAuthenticationStateAsync()).User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+
         await Mediator.Send(new RegisterNewStreamer
         {
             Name = Model.Name,
+            Email = email,
             Description = Model.Description,
             Platforms = Model.Platforms.Select(m => new RegisterNewStreamer.Platform { Name = m.Name, Url = m.Url }),
             Technologies = Model.Technologies
@@ -59,10 +96,10 @@
 
     public class RegistrationModel
     {
-
         public string Name { get; set; }
-
+        public string Email { get; set; }
         public string Description { get; set; }
+        public bool IsStreamer { get; set; }
 
         public List<Platform> Platforms { get; set; } = new List<Platform>();
         public Guid[] Technologies { get; set; }

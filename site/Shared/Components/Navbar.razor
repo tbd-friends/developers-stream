@@ -7,8 +7,20 @@
         </a>
         <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
         <ul class="right hide-on-med-and-down">
+            <AuthorizeView>
+                <Authorized>
+                    <li>
+                        <a href="logout" class="btn red waves-effect waves-light">Logout</a>
+                    </li>
+                </Authorized>
+                <NotAuthorized>
+                    <li>
+                        <a href="login?redirectUri=/" class="btn light-blue waves-effect waves-light">Login</a>
+                    </li>
+                </NotAuthorized>
+            </AuthorizeView>
             <li>
-                <a href="/register-streamer" class="btn light-green waves-effect waves-light">Sign-Up</a>
+                <a href="/register-streamer" class="btn light-green waves-effect waves-light">Register Streamer</a>
             </li>
         </ul>
     </div>

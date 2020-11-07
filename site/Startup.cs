@@ -1,12 +1,18 @@
+using System;
+using System.Threading.Tasks;
 using application.Extensions;
 using core;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using site.Infrastructure;
 using Syncfusion.Blazor;
 
 namespace site
@@ -27,6 +33,22 @@ namespace site
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
+            services.AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                })
+                .AddCookie()
+                .AddAuth0(Configuration);
+
             services.AddDbContext<ApplicationContext>(ctx =>
                 ctx.UseSqlServer(Configuration.GetConnectionString("application")));
 
@@ -36,6 +58,7 @@ namespace site
 
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(Configuration["syncfusion:license"]);
 
+            services.AddHttpContextAccessor();
             services.AddHandlers();
         }
 
@@ -57,6 +80,10 @@ namespace site
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseCookiePolicy();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
