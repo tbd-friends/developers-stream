@@ -89,6 +89,7 @@
             Name = Model.Name,
             Email = email,
             Description = Model.Description,
+            IsStreamer = Model.IsStreamer,
             Platforms = Model.Platforms.Select(m => new RegisterNewStreamer.Platform { Name = m.Name, Url = m.Url }),
             Technologies = Model.Technologies
         });

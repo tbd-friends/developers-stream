@@ -12,7 +12,8 @@ namespace application.Commands
         public string Description { get; set; }
         public IEnumerable<Platform> Platforms { get; set; }
         public IEnumerable<Guid> Technologies { get; set; }
-        
+        public bool IsStreamer { get; set; }
+
 
         public class Platform
         {
