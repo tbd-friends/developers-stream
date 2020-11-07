@@ -8,14 +8,17 @@ using Xunit;
 
 namespace application.tests.when_a_new_streamer_is_registering
 {
-    public class when_name_is_provided_and_no_description
+    public class when_registering_user_is_streamer
     {
         private RegisterNewStreamerHandler _subject;
         private Mock<IApplicationContext> _context;
 
-        public readonly string StreamerName = "streamer-name";
+        public const string StreamerName = "streamer-name";
+        public const string Description = "description";
+        public const string Email = "email-address";
+        public const bool IsStreamer = true;
 
-        public when_name_is_provided_and_no_description()
+        public when_registering_user_is_streamer()
         {
             Arrange();
 
@@ -32,22 +35,18 @@ namespace application.tests.when_a_new_streamer_is_registering
         {
             _subject.Handle(new RegisterNewStreamer
             {
-                Name = StreamerName
+                Name = StreamerName,
+                Description = Description,
+                Email = Email,
+                IsStreamer = IsStreamer
             }, CancellationToken.None);
         }
-
         [Fact]
-        public void name_is_captured()
+        public void is_streamer_is_true()
         {
-            _context.Verify(ctx =>
-                ctx.Insert(It.Is<Streamer>(
-                    s => s.Name == StreamerName)), Times.Once);
-        }
-
-        [Fact]
-        public void information_was_committed()
-        {
-            _context.Verify(ctx => ctx.SaveChanges(), Times.Once);
+            _context.Verify(
+                ctx => ctx.Insert(
+                    It.Is<Streamer>(s => s.Name == StreamerName && s.IsStreamer)), Times.Once);
         }
     }
 }

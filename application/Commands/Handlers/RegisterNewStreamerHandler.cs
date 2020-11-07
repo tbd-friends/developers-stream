@@ -21,7 +21,9 @@ namespace application.Commands.Handlers
             var streamer = new Streamer
             {
                 Name = request.Name,
-                Description = request.Description
+                Description = request.Description,
+                IsStreamer = request.IsStreamer,
+                Email = request.Email
             };
 
             _context.Insert(streamer);
