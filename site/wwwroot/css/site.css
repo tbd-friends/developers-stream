@@ -1,5 +1,6 @@
 html, body {
     min-height: 100vh;
+    font-family: Roboto, 'sans-serif', helvetica;
 }
 
 body {
@@ -69,4 +70,32 @@ footer {
 
 .margin-left-right-3 {
     margin: 0 3px;
+}
+
+/* Platforms */
+
+.platform-selected {
+    min-height: 42px;
+    display: table;
+    padding: 5px 0;
+    vertical-align: middle;
+}
+
+    .platform-selected img {
+        width: 30px;
+        height: 30px;
+        display: table-cell;
+        margin: auto 5px;
+    }
+
+    .platform-selected span {
+        padding-left: 10px;
+        vertical-align: middle;
+        display: table-cell;
+        font-size: 1.2em;
+        color: #f1f1f1;
+    }
+
+.platform-listview {
+    padding: 15px 0 10px 0;
 }

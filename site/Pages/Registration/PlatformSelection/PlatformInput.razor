@@ -5,22 +5,23 @@
 @using Syncfusion.Blazor.Inputs;
 @using Syncfusion.Blazor.Buttons;
 
-<div>
+<EditForm Model="Model">
     <div>
-        <SfDropDownList TValue="string" TItem="PlatformItem"
-                        Placeholder="Select a game" @bind-Value="@Model.PlatformName"
-                        DataSource="AvailablePlatforms">
-            <DropDownListFieldSettings Text="Name" Value="Value"></DropDownListFieldSettings>
-        </SfDropDownList>
+        <div>
+            <SfDropDownList TValue="string" TItem="PlatformItem"
+                            Placeholder="Select a platform" @bind-Value="@Model.PlatformName"
+                            DataSource="AvailablePlatforms">
+                <DropDownListFieldSettings Text="Name" Value="Value"></DropDownListFieldSettings>
+            </SfDropDownList>
+        </div>
+        <div>
+            <SfTextBox @bind-Value="@Model.Url" Placeholder="Url" FloatLabelType="FloatLabelType.Auto" ShowClearButton="true" />
+        </div>
+        <div>
+            <SfButton OnClick="AddPlatform" IsPrimary="true">Add</SfButton>
+        </div>
     </div>
-    <div>
-        <SfTextBox @bind-Value="@Model.Url" Placeholder="Url" FloatLabelType="FloatLabelType.Auto" />
-    </div>
-    <div>
-        <SfButton OnClick="AddPlatform" IsPrimary="true">Add</SfButton>
-    </div>
-</div>
-
+</EditForm>
 @code
 {
     [Parameter]
@@ -32,6 +33,7 @@
         new PlatformItem {Name = "Twitch", Value = "twitch", Prefix = "https://twitch.tv/"},
         new PlatformItem {Name = "YouTube", Value = "youtube", Prefix = "https://youtube.com/"},
         new PlatformItem {Name = "Facebook", Value = "facebook", Prefix = "https://facebook.com/"},
+        new PlatformItem {Name="LinkedIn", Value="linkedin", Prefix = "https://linkedin.com" },
         new PlatformItem {Name = "Website", Value = "website"},
         new PlatformItem {Name = "Dev.To", Value = "devto", Prefix = "https://dev.to/"}
     };

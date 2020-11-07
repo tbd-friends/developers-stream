@@ -18,21 +18,23 @@
         </div>
         <div class="col s12">
             <SfTextBox @bind-Value="Model.Description"
-                       FloatLabelType="FloatLabelType.Auto"
-                       Placeholder="What do you stream about? What sort of things can people expect?"
-                       Multiline="true" />
+                        FloatLabelType="FloatLabelType.Auto"
+                        Placeholder="What do you stream about? What sort of things can people expect?"
+                        Multiline="true" />
         </div>
         <div class="col s12">
+            <h5>Platforms</h5>
             <PlatformList @bind-Platforms="Model.Platforms" />
         </div>
         <div class="col s12">
-            <SelectTechnology @bind-SelectedTechnologies="Model.Technologies" />
+            <h5>Technologies</h5>
+            <SelectTechnology @bind-SelectedTechnologies="Model.Technologies"/>
         </div>
-        <div>
+        <div class="col s12">
             <DataAnnotationsValidator />
             <ValidationSummary />
         </div>
-        <div>
+        <div class="col s12">
             <button class="btn btn-primary">Submit</button>
         </div>
     </EditForm>
