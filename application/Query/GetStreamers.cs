@@ -4,7 +4,7 @@ using viewmodels;
 
 namespace application.Query
 {
-    public class GetStreams : IRequest<PagedResult<StreamViewModel>>
+    public class GetStreamers : IRequest<PagedResult<StreamViewModel>>
     {
         public string Term { get; set; }
         public int PageSize { get; set; }

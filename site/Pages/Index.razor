@@ -30,14 +30,14 @@
 
     protected override async Task OnInitializedAsync()
     {
-        PagedResult = await Mediator.Send(new GetStreams() { PageNumber = 1, PageSize = PageSize });
+        PagedResult = await Mediator.Send(new GetStreamers() { PageNumber = 1, PageSize = PageSize });
     }
 
     private void ChangePage(int pageNumber)
     {
         InvokeAsync(async () =>
         {
-            PagedResult = await Mediator.Send(new GetStreams { Term = Term, PageNumber = pageNumber, PageSize = PageSize });
+            PagedResult = await Mediator.Send(new GetStreamers { Term = Term, PageNumber = pageNumber, PageSize = PageSize });
         });
     }
 
@@ -47,7 +47,7 @@
 
         await InvokeAsync(async () =>
         {
-            PagedResult = await Mediator.Send(new GetStreams { Term = Term, PageNumber = 1, PageSize = PageSize });
+            PagedResult = await Mediator.Send(new GetStreamers { Term = Term, PageNumber = 1, PageSize = PageSize });
 
             StateHasChanged();
         });                                                                                                                              

@@ -6,6 +6,13 @@
             <h5 class="card-title">@Streamer.Name</h5>
             <p class="card-text">@Streamer.Description</p>
             <!--<a href="@Streamer.Url" class="btn btn-primary">Go to channel</a>-->
+
+            @foreach (var platform in Streamer.Platforms)
+            {
+                <a href="@(platform.Url)" class="platform-link">
+                    <img src="images/@(platform.Name).svg" title="@(platform.Name)" />
+                </a>
+            }
         </div>
     </div>
 </div>

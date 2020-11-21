@@ -35,6 +35,15 @@ footer {
         top: 0.5rem;
     }
 
+.platform-link {
+    padding: 0 6px;
+}
+
+.platform-link img {
+    width: 28px;
+    height: 28px;
+}
+
 /*
 
     Padding
