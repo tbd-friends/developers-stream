@@ -1,5 +1,7 @@
 ﻿@using site.Models
 @using System.Resources
+@using application.Query
+@using MediatR
 @using site.Pages.Registration.PlatformSelection.Models
 @using Syncfusion.Blazor.DropDowns;
 @using Syncfusion.Blazor.Inputs;
@@ -38,11 +40,16 @@
         new PlatformItem {Name = "Dev.To", Value = "devto", Prefix = "https://dev.to/"}
     };
 
+    [Inject]
+    public IMediator Mediator { get; set; }
+
     public async Task AddPlatform()
     {
+        var isAlreadyRegistered = await Mediator.Send(new IsPlatformRegistered { Url = Model.Url });
+
         if (Model.IsValid)
         {
-            await OnPlatformAdded.InvokeAsync(new Platform { Name = Model.PlatformName, Url = Model.Url });
+            await OnPlatformAdded.InvokeAsync(new Platform { Name = Model.PlatformName, Url = Model.Url, AlreadyRegistered = isAlreadyRegistered });
 
             await Reset();
         }

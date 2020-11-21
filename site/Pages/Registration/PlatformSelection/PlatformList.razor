@@ -1,19 +1,23 @@
 ﻿@using site.Models
+@using Syncfusion.Blazor.TreeGrid.Internal
+@using MediatR
+@using application.Query
+@using System.Reflection
 
 
-    <PlatformInput OnPlatformAdded="OnPlatformAdded" />
-    <SfListView Enable="true" DataSource="Platforms" TValue="Platform" CssClass="platform-listview">
-        <ListViewTemplates TValue="Platform">
-            <Template>
-                <div class="platform-selected">
-                    <img src="images/@(context.Name).svg" /><span>
-                        @(context.Url)
-                        <a class="btn btn-small waves-effect waves-light" @onclick="(() => OnPlatformRemoved(context))"><i class="material-icons">cancel</i></a>
-                    </span>
-                </div>
-            </Template>
-        </ListViewTemplates>
-    </SfListView>
+<PlatformInput OnPlatformAdded="OnPlatformAdded" />
+<SfListView Enable="true" DataSource="Platforms" TValue="Platform" CssClass="platform-listview">
+    <ListViewTemplates TValue="Platform">
+        <Template>
+            <div class="platform-selected">
+                <img src="images/@(context.Name).svg" /><span>
+                    @(context.Url)
+                    <a class="btn btn-small waves-effect waves-light" @onclick="(() => OnPlatformRemoved(context))"><i class="material-icons">cancel</i></a>
+                </span>
+            </div>
+        </Template>
+    </ListViewTemplates>
+</SfListView>
 
 @code
 {
@@ -23,18 +27,60 @@
     [Parameter]
     public EventCallback<List<Platform>> PlatformsChanged { get; set; }
 
+    [CascadingParameter]
+    public EditContext EditContext { get; set; }
 
-    protected void OnPlatformAdded(Platform platform)
+    public ValidationMessageStore ValidationMessageStore { get; set; }
+
+    public bool IsValid => Platforms.All(p => !p.AlreadyRegistered);
+
+    protected override Task OnInitializedAsync()
+    {
+        ValidationMessageStore = new ValidationMessageStore(EditContext);
+
+        EditContext.OnValidationRequested += (object sender, ValidationRequestedEventArgs args) =>
+        {
+            ValidationMessageStore.Clear();
+
+            var fieldIdentifier = new FieldIdentifier(EditContext.Model, "Platforms");
+
+            if (!IsValid)
+            {
+                ValidationMessageStore.Add(fieldIdentifier, "You can't add the same streams on different streamers");
+            }
+
+            if (!Platforms.Any())
+            {
+                ValidationMessageStore.Add(fieldIdentifier, "You must have at least one platform to register a streamer");
+            }
+
+            EditContext.NotifyValidationStateChanged();
+        };
+
+        return base.OnInitializedAsync();
+    }
+
+    protected async Task OnPlatformAdded(Platform platform)
     {
         Platforms.Add(platform);
 
-        PlatformsChanged.InvokeAsync(Platforms);
+        EditContext.Validate();
+
+        await PlatformsChanged.InvokeAsync(Platforms);
     }
 
     protected void OnPlatformRemoved(Platform platform)
     {
         Platforms.Remove(platform);
 
+        EditContext.Validate();
+
         PlatformsChanged.InvokeAsync(Platforms);
     }
+
+    /*
+     * Reference; https://blazor-university.com/forms/writing-custom-validation/
+     * Thank you CopperBeardy
+     *
+     */
 }

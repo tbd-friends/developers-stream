@@ -19,7 +19,7 @@ namespace application.Query.Handlers
         public Task<bool> Handle(IsPlatformRegistered request, CancellationToken cancellationToken)
         {
             var alreadyRegistered = (from p in _context.StreamerPlatforms
-                                     where p.Url.Equals(request.Url, StringComparison.CurrentCultureIgnoreCase)
+                                     where p.Url == request.Url
                                      select p).Any();
 
             return Task.FromResult(alreadyRegistered);
