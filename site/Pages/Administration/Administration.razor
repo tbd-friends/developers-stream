@@ -47,7 +47,7 @@
                     var model = (context as StreamerViewModel);
                     <SfButton IsPrimary="true">Verify</SfButton>
                     <SfButton Disabled="@(model.IsRejected)" @onclick="(() => RejectStreamer(model))">Reject</SfButton>
-                    <SfButton Disabled="@(!model.IsRejected)">Delete</SfButton>
+                    <SfButton Disabled="@(!model.IsRejected)" @onclick="(() => DeleteStreamer(model))">Delete</SfButton>
                 }
             </Template>
         </GridColumn>
@@ -70,5 +70,10 @@
     protected async Task RejectStreamer(StreamerViewModel model)
     {
         await Mediator.Send(new RejectStreamer() { Id = model.Id });
+    }
+
+    protected async Task DeleteStreamer(StreamerViewModel model)
+    {
+        await Mediator.Send(new DeleteStreamer { Id = model.Id });
     }
 }
