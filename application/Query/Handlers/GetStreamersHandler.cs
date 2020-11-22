@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using core;
+using core.Enums;
 using MediatR;
 using viewmodels;
 
@@ -18,7 +19,9 @@ namespace application.Query.Handlers
 
         public Task<PagedResult<StreamViewModel>> Handle(GetStreamers request, CancellationToken cancellationToken)
         {
-            var streams = _context.Streamers;
+            var streams = from stream in _context.Streamers
+                          where stream.Status == StreamerStatus.Verified
+                          select stream;
 
             if (!string.IsNullOrEmpty(request.Term))
             {
