@@ -3,13 +3,14 @@ using System.Threading;
 using application.Commands;
 using application.Commands.Handlers;
 using core;
+using core.Enums;
 using core.Models;
 using Moq;
 using Xunit;
 
 namespace application.tests.when_a_new_streamer_is_registering
 {
-    public class when_registering_user_is_not_streamer
+    public class when_registrar_is_not_the_streamer
     {
         private RegisterNewStreamerHandler _subject;
         private Mock<IApplicationContext> _context;
@@ -19,7 +20,7 @@ namespace application.tests.when_a_new_streamer_is_registering
         public const string Email = "email-address";
         public const bool IsStreamer = false;
 
-        public when_registering_user_is_not_streamer()
+        public when_registrar_is_not_the_streamer()
         {
             Arrange();
 
@@ -49,6 +50,14 @@ namespace application.tests.when_a_new_streamer_is_registering
             _context.Verify(
                 ctx => ctx.Insert(
                     It.Is<Streamer>(s => s.Name == StreamerName && s.IsStreamer == false)), Times.Once);
+        }
+
+        [Fact]
+        public void streamer_is_added_in_unverified_state()
+        {
+            _context.Verify(ctx =>
+                ctx.Insert(It.Is<Streamer>(s =>
+                    s.Name == StreamerName && s.Status == StreamerStatus.PendingVerification)));
         }
     }
 }
