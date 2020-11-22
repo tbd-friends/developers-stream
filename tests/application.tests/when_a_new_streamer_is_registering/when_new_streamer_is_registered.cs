@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
 using application.Commands;
 using application.Commands.Handlers;
 using core;
@@ -8,14 +9,12 @@ using Xunit;
 
 namespace application.tests.when_a_new_streamer_is_registering
 {
-    public class when_name_is_provided_and_no_platforms
+    public class when_new_streamer_is_registered
     {
         private RegisterNewStreamerHandler _subject;
         private Mock<IApplicationContext> _context;
 
-        public readonly string StreamerName = "streamer-name";
-
-        public when_name_is_provided_and_no_platforms()
+        public when_new_streamer_is_registered()
         {
             Arrange();
 
@@ -25,6 +24,7 @@ namespace application.tests.when_a_new_streamer_is_registering
         private void Arrange()
         {
             _context = new Mock<IApplicationContext>();
+
             _subject = new RegisterNewStreamerHandler(_context.Object);
         }
 
@@ -32,28 +32,26 @@ namespace application.tests.when_a_new_streamer_is_registering
         {
             _subject.Handle(new RegisterNewStreamer
             {
-                Name = StreamerName
+                Name = "StreamerName",
+                Platforms = new List<RegisterNewStreamer.Platform>
+                    {new RegisterNewStreamer.Platform() {Name = "Platform", Url = "PlatformUrl"}},
+                Technologies = null
             }, CancellationToken.None);
         }
 
         [Fact]
-        public void name_is_captured()
+        public void streamer_is_added_in_unverified_state()
         {
             _context.Verify(ctx =>
-                ctx.Insert(It.Is<Streamer>(
-                    s => s.Name == StreamerName)), Times.Once);
+                ctx.Insert(It.Is<Streamer>(s =>
+                    s.Name == "StreamerName" && s.Status == StreamerStatus.PendingVerification)));
         }
+    }
 
-        [Fact]
-        public void no_platforms_are_registered()
-        {
-            _context.Verify(ctx => ctx.Insert(It.IsAny<StreamerPlatform>()), Times.Never());
-        }
-
-        [Fact]
-        public void information_was_committed()
-        {
-            _context.Verify(ctx => ctx.SaveChanges(), Times.Once);
-        }
+    public enum StreamerStatus
+    {
+        PendingVerification = 0,
+        Verified, 
+        Rejected
     }
 }

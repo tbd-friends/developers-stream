@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using site.Infrastructure;
+using site.Infrastructure.Validators;
 using Syncfusion.Blazor;
 
 namespace site
@@ -53,6 +54,7 @@ namespace site
                 ctx.UseSqlServer(Configuration.GetConnectionString("application")));
 
             services.AddScoped<IApplicationContext, ApplicationContext>();
+            services.AddScoped<RegistrationModelValidator>();
 
             services.AddSyncfusionBlazor();
 

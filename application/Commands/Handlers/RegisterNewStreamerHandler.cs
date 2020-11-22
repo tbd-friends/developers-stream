@@ -18,6 +18,13 @@ namespace application.Commands.Handlers
 
         public Task<Unit> Handle(RegisterNewStreamer request, CancellationToken cancellationToken)
         {
+            InsertStreamerData(request);
+
+            return Unit.Task;
+        }
+
+        private void InsertStreamerData(RegisterNewStreamer request)
+        {
             var streamer = new Streamer
             {
                 Name = request.Name,
@@ -28,17 +35,14 @@ namespace application.Commands.Handlers
 
             _context.Insert(streamer);
 
-            if (request.Platforms != null)
+            foreach (var platform in request.Platforms)
             {
-                foreach (var platform in request.Platforms)
+                _context.Insert(new StreamerPlatform
                 {
-                    _context.Insert(new StreamerPlatform
-                    {
-                        StreamerId = streamer.Id,
-                        Name = platform.Name,
-                        Url = platform.Url
-                    });
-                }
+                    StreamerId = streamer.Id,
+                    Name = platform.Name,
+                    Url = platform.Url
+                });
             }
 
             if (request.Technologies != null)
@@ -54,8 +58,6 @@ namespace application.Commands.Handlers
             }
 
             _context.SaveChanges();
-
-            return Unit.Task;
         }
     }
 }

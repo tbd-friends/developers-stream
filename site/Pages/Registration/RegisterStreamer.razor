@@ -2,8 +2,8 @@
 @using MediatR
 @using application.Commands
 @using System.Security.Claims
-@using site.Models
 @using Syncfusion.Blazor.Inputs
+@using site.Pages.Registration.Models
 
 
 <h3>Register Streamer</h3>
@@ -21,6 +21,8 @@
         </NotAuthorized>
     </AuthorizeView>
     <EditForm Model="Model" OnValidSubmit="Register">
+        <FluentValidationValidator ValidatorType=typeof(RegistrationModelValidator) />
+
         <AuthorizeView Context="login">
             <Authorized>
                 <div class="col s12">
@@ -28,13 +30,15 @@
                                Readonly="true"
                                Placeholder="Email Address"
                                FloatLabelType="FloatLabelType.Auto" />
+                    <ValidationMessage For="() => (Model.Email)" />
                 </div>
             </Authorized>
             <NotAuthorized>
                 <div class="col s12">
                     <SfTextBox @bind-Value="Model.Email"
-                                FloatLabelType="FloatLabelType.Auto" 
-                                Placeholder="Email Address" />
+                               FloatLabelType="FloatLabelType.Auto"
+                               Placeholder="Email Address" />
+                    <ValidationMessage For="() => Model.Email" />
                 </div>
             </NotAuthorized>
         </AuthorizeView>
@@ -42,12 +46,14 @@
             <SfTextBox @bind-Value="Model.Name"
                        FloatLabelType="FloatLabelType.Auto"
                        Placeholder="Real Name or Alias" />
+            <ValidationMessage For="() => Model.Name" />
         </div>
         <div class="col s12">
             <SfTextBox @bind-Value="Model.Description"
                        FloatLabelType="FloatLabelType.Auto"
                        Placeholder="What do you stream about? What sort of things can people expect?"
                        Multiline="true" />
+            <ValidationMessage For="() => Model.Description" />
         </div>
         <div class="col s12">
             <SfCheckBox @bind-Checked="Model.IsStreamer" Label="Are you the streamer being registered?" />
@@ -55,14 +61,11 @@
         <div class="col s12">
             <h5>Platforms</h5>
             <PlatformList @bind-Platforms="Model.Platforms" />
+            <ValidationMessage For="() => Model.Platforms" />
         </div>
         <div class="col s12">
             <h5>Technologies</h5>
             <SelectTechnology @bind-SelectedTechnologies="Model.Technologies" />
-        </div>
-        <div class="col s12">
-            <DataAnnotationsValidator />
-            <ValidationSummary />
         </div>
         <div class="col s12">
             <button class="btn btn-primary">Submit</button>
@@ -76,32 +79,30 @@
     [Inject]
     public AuthenticationStateProvider AuthenticationProvider { get; set; }
 
-    public RegistrationModel Model { get; set; } = new RegistrationModel();
+    public RegistrationModel Model { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Model = new RegistrationModel();
+
+        var currentEmail = (await AuthenticationProvider.GetAuthenticationStateAsync()).User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+
+        if (currentEmail != null)
+        {
+            Model.Email = currentEmail;
+        }
+    }
 
     public async void Register()
     {
-        string email = Model.Email ??
-                       (await AuthenticationProvider.GetAuthenticationStateAsync()).User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-
         await Mediator.Send(new RegisterNewStreamer
         {
             Name = Model.Name,
-            Email = email,
+            Email = Model.Email,
             Description = Model.Description,
             IsStreamer = Model.IsStreamer,
             Platforms = Model.Platforms.Select(m => new RegisterNewStreamer.Platform { Name = m.Name, Url = m.Url }),
             Technologies = Model.Technologies
         });
-    }
-
-    public class RegistrationModel
-    {
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public string Description { get; set; }
-        public bool IsStreamer { get; set; }
-
-        public List<Platform> Platforms { get; set; } = new List<Platform>();
-        public Guid[] Technologies { get; set; }
     }
 }

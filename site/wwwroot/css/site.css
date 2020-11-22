@@ -35,14 +35,6 @@ footer {
         top: 0.5rem;
     }
 
-.platform-link {
-    padding: 0 6px;
-}
-
-.platform-link img {
-    width: 28px;
-    height: 28px;
-}
 
 /*
 
@@ -102,9 +94,35 @@ footer {
         vertical-align: middle;
         display: table-cell;
         font-size: 1.2em;
-        color: #f1f1f1;
+        color: #000;
     }
 
 .platform-listview {
     padding: 15px 0 10px 0;
+}
+
+.platform-link {
+    padding: 0 6px;
+}
+
+    .platform-link img {
+        width: 28px;
+        height: 28px;
+    }
+
+
+/*
+Validation Errors
+*/
+
+.validation-errors {
+    font-size: 1.1em;
+    width: 100%;
+    display: table;
+}
+
+.validation-message {
+    color: #d32f2f;
+    margin: 8px 0;
+    padding: 10px;
 }

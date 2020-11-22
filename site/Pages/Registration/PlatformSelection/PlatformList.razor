@@ -3,6 +3,7 @@
 @using MediatR
 @using application.Query
 @using System.Reflection
+@using System.ComponentModel.DataAnnotations
 
 
 <PlatformInput OnPlatformAdded="OnPlatformAdded" />
@@ -30,35 +31,7 @@
     [CascadingParameter]
     public EditContext EditContext { get; set; }
 
-    public ValidationMessageStore ValidationMessageStore { get; set; }
-
     public bool IsValid => Platforms.All(p => !p.AlreadyRegistered);
-
-    protected override Task OnInitializedAsync()
-    {
-        ValidationMessageStore = new ValidationMessageStore(EditContext);
-
-        EditContext.OnValidationRequested += (object sender, ValidationRequestedEventArgs args) =>
-        {
-            ValidationMessageStore.Clear();
-
-            var fieldIdentifier = new FieldIdentifier(EditContext.Model, "Platforms");
-
-            if (!IsValid)
-            {
-                ValidationMessageStore.Add(fieldIdentifier, "You can't add the same streams on different streamers");
-            }
-
-            if (!Platforms.Any())
-            {
-                ValidationMessageStore.Add(fieldIdentifier, "You must have at least one platform to register a streamer");
-            }
-
-            EditContext.NotifyValidationStateChanged();
-        };
-
-        return base.OnInitializedAsync();
-    }
 
     protected async Task OnPlatformAdded(Platform platform)
     {
@@ -78,9 +51,4 @@
         PlatformsChanged.InvokeAsync(Platforms);
     }
 
-    /*
-     * Reference; https://blazor-university.com/forms/writing-custom-validation/
-     * Thank you CopperBeardy
-     *
-     */
 }
