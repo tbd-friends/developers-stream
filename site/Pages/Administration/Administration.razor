@@ -45,7 +45,7 @@
             <Template>
                 @{
                     var model = (context as StreamerViewModel);
-                    <SfButton IsPrimary="true">Verify</SfButton>
+                    <SfButton IsPrimary="true" @onclick="(() => VerifyStreamer(model))">Verify</SfButton>
                     <SfButton Disabled="@(model.IsRejected)" @onclick="(() => RejectStreamer(model))">Reject</SfButton>
                     <SfButton Disabled="@(!model.IsRejected)" @onclick="(() => DeleteStreamer(model))">Delete</SfButton>
                 }
@@ -65,6 +65,11 @@
     protected override async Task OnInitializedAsync()
     {
         Streamers = await Mediator.Send(new GetPendingStreamers());
+    }
+
+    protected async Task VerifyStreamer(StreamerViewModel model)
+    {
+        await Mediator.Send(new VerifyStreamer { Id = model.Id });
     }
 
     protected async Task RejectStreamer(StreamerViewModel model)
