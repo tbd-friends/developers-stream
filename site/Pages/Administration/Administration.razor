@@ -64,21 +64,32 @@
 
     protected override async Task OnInitializedAsync()
     {
+        await LoadStreamers();
+    }
+
+    private async Task LoadStreamers()
+    {
         Streamers = await Mediator.Send(new GetPendingStreamers());
     }
 
     protected async Task VerifyStreamer(StreamerViewModel model)
     {
         await Mediator.Send(new VerifyStreamer { Id = model.Id });
+
+        await LoadStreamers();
     }
 
     protected async Task RejectStreamer(StreamerViewModel model)
     {
         await Mediator.Send(new RejectStreamer() { Id = model.Id });
+
+        await LoadStreamers();
     }
 
     protected async Task DeleteStreamer(StreamerViewModel model)
     {
         await Mediator.Send(new DeleteStreamer { Id = model.Id });
+
+        await LoadStreamers();
     }
 }
