@@ -2,6 +2,7 @@
 @using MediatR
 @using application.Query.Administration
 @using administration.viewmodels
+@using application.Commands.Administration
 
 <h3>Administration</h3>
 
@@ -68,6 +69,6 @@
 
     protected async Task RejectStreamer(StreamerViewModel model)
     {
-        
+        await Mediator.Send(new RejectStreamer() { Id = model.Id });
     }
 }
