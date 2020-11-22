@@ -8,7 +8,7 @@ using viewmodels;
 
 namespace application.Query.Handlers
 {
-    public class GetStreamersHandler : IRequestHandler<GetStreamers, PagedResult<StreamViewModel>>
+    public class GetStreamersHandler : IRequestHandler<GetStreamers, PagedResult<StreamerViewModel>>
     {
         private readonly IApplicationContext _context;
 
@@ -17,7 +17,7 @@ namespace application.Query.Handlers
             _context = context;
         }
 
-        public Task<PagedResult<StreamViewModel>> Handle(GetStreamers request, CancellationToken cancellationToken)
+        public Task<PagedResult<StreamerViewModel>> Handle(GetStreamers request, CancellationToken cancellationToken)
         {
             var streams = from stream in _context.Streamers
                           where stream.Status == StreamerStatus.Verified
@@ -32,13 +32,13 @@ namespace application.Query.Handlers
             }
 
             return Task.FromResult(
-                new PagedResult<StreamViewModel>
+                new PagedResult<StreamerViewModel>
                 {
                     TotalItems = streams.Count(),
                     Results = from stream in streams.Skip((request.PageNumber - 1) * request.PageSize)
                             .Take(request.PageSize)
                             .AsEnumerable()
-                              select new StreamViewModel
+                              select new StreamerViewModel
                               {
                                   Id = stream.Id,
                                   Name = stream.Name,

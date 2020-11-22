@@ -17,7 +17,6 @@ namespace core
         public DbSet<StreamerPlatform> StreamerPlatforms { get; set; }
         public DbSet<StreamerTechnology> StreamerTechnologies { get; set; }
 
-
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
 

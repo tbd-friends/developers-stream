@@ -50,6 +50,12 @@ namespace site
                 .AddCookie()
                 .AddAuth0(Configuration);
 
+            services.AddAuthorization(config =>
+            {
+                config.AddPolicy("Administrator", policy => policy.RequireRole("Administrator"));
+                config.AddPolicy("Streamer", policy => policy.RequireRole("Streamer"));
+            });
+
             services.AddDbContext<ApplicationContext>(ctx =>
                 ctx.UseSqlServer(Configuration.GetConnectionString("application")));
 
