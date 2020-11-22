@@ -3,7 +3,7 @@ using MediatR;
 
 namespace application.Commands.Administration
 {
-    public class UpdateStreamerAsRejected : IRequest
+    public class RejectStreamer : IRequest
     {
         public Guid Id { get; set; }
     }

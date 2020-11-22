@@ -15,7 +15,7 @@ namespace application.tests.when_administering_streamers
     public class when_streamer_is_rejected
     {
         private Mock<IApplicationContext> _context;
-        private UpdateStreamerAsRejectedHandler _subject;
+        private RejectStreamerHandler _subject;
         private Streamer _streamerFromDb;
         private readonly Guid _streamerId = Guid.NewGuid();
 
@@ -39,12 +39,12 @@ namespace application.tests.when_administering_streamers
 
             _context.Setup(ctx => ctx.Streamers).Returns(new[] { _streamerFromDb }.AsQueryable());
 
-            _subject = new UpdateStreamerAsRejectedHandler(_context.Object);
+            _subject = new RejectStreamerHandler(_context.Object);
         }
 
         private void Act()
         {
-            _subject.Handle(new UpdateStreamerAsRejected
+            _subject.Handle(new RejectStreamer
             {
                 Id = _streamerId
             }, CancellationToken.None).GetAwaiter().GetResult();
