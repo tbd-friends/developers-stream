@@ -3,6 +3,7 @@ using System.Threading;
 using application.Commands;
 using application.Commands.Handlers;
 using core;
+using core.Enums;
 using core.Models;
 using Moq;
 using Xunit;
@@ -46,12 +47,5 @@ namespace application.tests.when_a_new_streamer_is_registering
                 ctx.Insert(It.Is<Streamer>(s =>
                     s.Name == "StreamerName" && s.Status == StreamerStatus.PendingVerification)));
         }
-    }
-
-    public enum StreamerStatus
-    {
-        PendingVerification = 0,
-        Verified, 
-        Rejected
     }
 }

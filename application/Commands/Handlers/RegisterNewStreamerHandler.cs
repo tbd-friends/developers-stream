@@ -1,9 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using core;
+using core.Enums;
 using core.Models;
 using MediatR;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace application.Commands.Handlers
 {
@@ -30,7 +30,8 @@ namespace application.Commands.Handlers
                 Name = request.Name,
                 Description = request.Description,
                 IsStreamer = request.IsStreamer,
-                Email = request.Email
+                Email = request.Email,
+                Status = StreamerStatus.PendingVerification
             };
 
             _context.Insert(streamer);

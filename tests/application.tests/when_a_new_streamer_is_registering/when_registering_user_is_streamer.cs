@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
 using application.Commands;
 using application.Commands.Handlers;
 using core;
@@ -38,7 +39,8 @@ namespace application.tests.when_a_new_streamer_is_registering
                 Name = StreamerName,
                 Description = Description,
                 Email = Email,
-                IsStreamer = IsStreamer
+                IsStreamer = IsStreamer,
+                Platforms = new List<RegisterNewStreamer.Platform>()
             }, CancellationToken.None);
         }
         [Fact]

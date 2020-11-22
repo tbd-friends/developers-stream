@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using core.Enums;
 using core.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,6 +33,10 @@ namespace core
             modelBuilder.Entity<AvailableTechnology>()
                 .Property(p => p.Id)
                 .HasDefaultValueSql("newid()");
+
+            modelBuilder.Entity<Streamer>()
+                .Property(p => p.Status)
+                .HasDefaultValue(StreamerStatus.PendingVerification);
         }
 
         public void Insert<TEntity>(TEntity entity) where TEntity : class

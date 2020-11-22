@@ -1,4 +1,5 @@
 ﻿using System;
+using core.Enums;
 
 namespace core.Models
 {
@@ -9,5 +10,6 @@ namespace core.Models
         public string Description { get; set; }
         public string Email { get; set; }
         public bool IsStreamer { get; set; }
+        public StreamerStatus Status { get; set; }
     }
 }
