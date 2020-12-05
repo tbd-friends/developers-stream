@@ -10,9 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using site.Infrastructure;
 using site.Infrastructure.Validators;
-using site.Jobs;
 using Syncfusion.Blazor;
-using twitchstreambot.api.Configuration;
 
 namespace site
 {
@@ -66,8 +64,6 @@ namespace site
 
             services.AddHttpContextAccessor();
             services.AddHandlers();
-
-            services.AddHelix(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
