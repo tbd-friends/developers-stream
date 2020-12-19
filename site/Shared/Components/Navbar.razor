@@ -15,13 +15,18 @@
                 </Authorized>
                 <NotAuthorized>
                     <li>
-                        <a href="login?redirectUri=/" class="btn light-blue waves-effect waves-light">Login</a>
+                        <a href="login?redirectUri=/register" class="btn light-blue waves-effect waves-light">Login</a>
                     </li>
                 </NotAuthorized>
             </AuthorizeView>
-            <AuthorizeView Roles="Streamer">
+            <AuthorizeView Roles="Administrator">
                 <li>
                     <a href="administration" class="btn orange waves-effect waves-light">Administration</a>
+                </li>
+            </AuthorizeView>
+            <AuthorizeView Roles="Streamer">
+                <li>
+                    <a href="my-profile" class="btn orange waves-effect waves-light">My Profile</a>
                 </li>
             </AuthorizeView>
             <li>

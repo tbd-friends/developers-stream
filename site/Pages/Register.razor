@@ -1,0 +1,64 @@
+﻿@page "/register"
+@page "/register/{source}"
+@using global::Auth0.ManagementApi
+@using global::Auth0.AuthenticationApi
+@using global::Auth0.AuthenticationApi.Models
+@using Microsoft.Extensions.Configuration
+@using System.Security.Claims
+@using global::Auth0.ManagementApi.Models
+@using Microsoft.AspNetCore.Authentication
+
+@code {
+    [Inject]
+    public NavigationManager Navigation { get; set; }
+
+    [Inject]
+    public IConfiguration Configuration { get; set; }
+    [Inject]
+    public IManagementConnection ManagementConnection { get; set; }
+    [Inject]
+    public IAuthenticationConnection AuthenticationConnection { get; set; }
+
+    [Parameter]
+    public string Source { get; set; }
+
+    [Inject]
+    public AuthenticationStateProvider AuthenticationProvider { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authentication = await AuthenticationProvider.GetAuthenticationStateAsync();
+
+        if (!authentication.User.IsInRole("Streamer"))
+        {
+            var client = new AuthenticationApiClient(Configuration["Auth0:Domain"], AuthenticationConnection);
+
+            var token = await client.GetTokenAsync(
+                new ClientCredentialsTokenRequest
+                {
+                    Audience = Configuration["Auth0-Management:Audience"],
+                    ClientId = Configuration["Auth0-Management:ClientId"],
+                    ClientSecret = Configuration["Auth0-Management:ClientSecret"]
+                });
+
+            var management = new ManagementApiClient(
+                token.AccessToken,
+                Configuration["Auth0:Domain"],
+                ManagementConnection);
+
+            var claim = authentication.User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+
+            if (claim != null)
+            {
+                var rolePaged = await management.Roles.GetAllAsync(new GetRolesRequest() { NameFilter = "Streamer" });
+
+                await management.Roles.AssignUsersAsync(rolePaged.Single().Id, new AssignUsersRequest
+                {
+                    Users = new[] { claim.Value }
+                });
+            }
+        }
+
+        Navigation.NavigateTo($"/{Source}");
+    }
+}

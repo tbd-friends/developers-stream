@@ -1,4 +1,6 @@
 using application.Extensions;
+using Auth0.AuthenticationApi;
+using Auth0.ManagementApi;
 using core;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -64,6 +66,9 @@ namespace site
 
             services.AddHttpContextAccessor();
             services.AddHandlers();
+
+            services.AddScoped<IManagementConnection, HttpClientManagementConnection>();
+            services.AddScoped<IAuthenticationConnection, HttpClientAuthenticationConnection>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

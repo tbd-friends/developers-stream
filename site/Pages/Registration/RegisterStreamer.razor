@@ -2,6 +2,7 @@
 @using MediatR
 @using application.Commands
 @using System.Security.Claims
+@using System.Web
 @using Syncfusion.Blazor.Inputs
 @using site.Pages.Registration.Models
 
@@ -15,7 +16,7 @@
                 <div class="card-content">
                     <div class="card-title">Login</div>
                     <p>If you are registering your own streams, consider logging in. This will allow you to update the profile information after it is entered.</p>
-                    <a target="_self" href="login?redirectUri=/register-streamer" class="btn light-blue waves-effect waves-light">Login</a>
+                    <a target="_self" href="login?redirectUri=@(HttpUtility.UrlEncode("/register/register-streamer"))" class="btn light-blue waves-effect waves-light">Login</a>
                 </div>
             </div>
         </NotAuthorized>

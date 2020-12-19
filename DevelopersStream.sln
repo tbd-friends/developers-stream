@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "application.tests", "tests\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "viewmodels", "viewmodels\viewmodels.csproj", "{BB2646CB-9C73-49DA-955D-1E1B25944B0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "administration.viewmodels", "administration.viewmodels\administration.viewmodels.csproj", "{4B01B75F-2FE7-49F7-A0F8-930983941E15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "administration.viewmodels", "administration.viewmodels\administration.viewmodels.csproj", "{4B01B75F-2FE7-49F7-A0F8-930983941E15}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
