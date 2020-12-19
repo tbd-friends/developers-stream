@@ -9,14 +9,16 @@
 
 @if (PagedResult != null)
 {
-    <div class="row">
-        @foreach (var stream in PagedResult.Results)
-        {
-            <StreamerCard Streamer="stream" />
-        }
-    </div>
+    <div class="flex">
+        <div class="streamer-cards">
+            @foreach (var stream in PagedResult.Results)
+            {
+                <StreamerCard Streamer="stream" />
+            }
+        </div>
 
-    <Paginator TotalItems="PagedResult.TotalItems" PageSize="PageSize" OnPageChanged="ChangePage" />
+        <Paginator TotalItems="PagedResult.TotalItems" PageSize="PageSize" OnPageChanged="ChangePage" />
+    </div>
 }
 
 @code
@@ -50,6 +52,6 @@
             PagedResult = await Mediator.Send(new GetStreamers { Term = Term, PageNumber = 1, PageSize = PageSize });
 
             StateHasChanged();
-        });                                                                                                                              
+        });
     }
 }

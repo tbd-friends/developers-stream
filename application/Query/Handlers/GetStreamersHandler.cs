@@ -26,8 +26,17 @@ namespace application.Query.Handlers
             if (!string.IsNullOrEmpty(request.Term))
             {
                 streams = from stream in streams
+                          let usesTechnology = (
+                                                    from st in _context.StreamerTechnologies
+                                                    join t in _context.AvailableTechnologies on st.TechnologyId equals t.Id
+                                                    where
+                                                        st.StreamerId == stream.Id &&
+                                                        (t.Name.Contains(request.Term) || t.Aliases.Contains(request.Term))
+                                                    select t
+                                                    ).Any()
                           where stream.Name.Contains(request.Term) ||
-                                stream.Description.Contains(request.Term)
+                                stream.Description.Contains(request.Term) ||
+                                usesTechnology
                           select stream;
             }
 
@@ -49,7 +58,11 @@ namespace application.Query.Handlers
                                               {
                                                   Name = p.Name,
                                                   Url = p.Url
-                                              }
+                                              },
+                                  Technologies = from st in _context.StreamerTechnologies
+                                                 join a in _context.AvailableTechnologies on st.TechnologyId equals a.Id
+                                                 where st.StreamerId == stream.Id
+                                                 select a.Name
                               }
                 });
         }

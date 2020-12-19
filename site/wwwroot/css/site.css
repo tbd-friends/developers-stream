@@ -1,5 +1,4 @@
 html, body {
-    min-height: 100vh;
     font-family: Roboto, 'sans-serif', helvetica;
 }
 
@@ -126,3 +125,34 @@ Validation Errors
     margin: 8px 0;
     padding: 10px;
 }
+
+/*
+    Streamer Cards Layout
+*/
+
+/*.flex {
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+}*/
+
+.streamer-cards {
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    display: grid;
+    grid-gap: 7px;
+}
+
+    .streamer-cards .streamer-card {
+        min-height: 12em;
+        padding: 5px 10px;
+    }
+
+        .streamer-cards .streamer-card .streamer-technologies {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+            .streamer-cards .streamer-card .streamer-technologies i {
+                font-size: 2.5em;
+                padding: 3px;
+            }
