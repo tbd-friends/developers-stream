@@ -1,0 +1,34 @@
+﻿@page "/my-profile"
+@using MediatR
+@using administration.viewmodels
+@using application.Query.Streamer
+@using System.Security.Claims
+
+@foreach (var streamer in Streamers)
+{
+    <div class="card">
+        <div class="card-title">@streamer.Name</div>
+        <div class="card-content">
+            @streamer.Description
+        </div>
+    </div>
+}
+
+@code {
+
+    [Inject] public IMediator Mediator { get; set; }
+    [Inject] public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+
+    public IEnumerable<StreamerViewModel> Streamers { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var identity = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+
+        Streamers = await Mediator.Send(new GetAssociatedStreamers
+        {
+            Email = identity.User.Claims.Single(c => c.Type == ClaimTypes.Email).Value
+        });
+    }
+
+}
