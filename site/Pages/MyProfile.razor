@@ -4,15 +4,45 @@
 @using application.Query.Streamer
 @using System.Security.Claims
 
-@foreach (var streamer in Streamers)
-{
-    <div class="card">
-        <div class="card-title">@streamer.Name</div>
-        <div class="card-content">
-            @streamer.Description
-        </div>
-    </div>
-}
+<h3>My Profile</h3>
+
+<SfGrid DataSource="@Streamers">
+    <GridTemplates>
+        <DetailTemplate>
+            @{
+                var streamer = (context as StreamerViewModel);
+                <SfGrid TValue="PlatformViewModel" DataSource="streamer.Platforms" AllowPaging="true">
+                    <GridPageSettings PageSize="8"></GridPageSettings>
+                    <GridColumns>
+                        <GridColumn Field=@nameof(PlatformViewModel.Name) HeaderText="Name" Width="120"> </GridColumn>
+                        <GridColumn Field=@nameof(PlatformViewModel.Url) HeaderText="Url" Width="200"></GridColumn>
+                    </GridColumns>
+                </SfGrid>
+            }
+        </DetailTemplate>
+    </GridTemplates>
+    <GridColumns>
+        <GridColumn Field=@nameof(StreamerViewModel.Name) HeaderText="Name" Width="150"> </GridColumn>
+        <GridColumn Field=@nameof(StreamerViewModel.Description) HeaderText="Description" Width="450"></GridColumn>
+        <GridColumn Field=@nameof(StreamerViewModel.IsStreamer) HeaderText="Streamer" Width="100">
+            <Template>
+                @{
+                    var isStreamer = (context as StreamerViewModel).IsStreamer;
+                    <div>@( isStreamer ? "Yes" : "No")</div>
+                }
+            </Template>
+        </GridColumn>
+        <GridColumn Field=@nameof(StreamerViewModel.Technologies) HeaderText="Technologies">
+            <Template>
+                @{
+                    var technologies = (context as StreamerViewModel).Technologies;
+
+                    <div>@(string.Join(", ", technologies.ToArray()))</div>
+                }
+            </Template>
+        </GridColumn>
+    </GridColumns>
+</SfGrid>
 
 @code {
 
