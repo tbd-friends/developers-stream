@@ -8,16 +8,16 @@ using viewmodels;
 
 namespace application.Query.Handlers
 {
-    public class GetStreamersHandler : IRequestHandler<GetStreamers, PagedResult<StreamerViewModel>>
+    public class SearchStreamersHandler : IRequestHandler<SearchStreamers, PagedResult<StreamerViewModel>>
     {
         private readonly IApplicationContext _context;
 
-        public GetStreamersHandler(IApplicationContext context)
+        public SearchStreamersHandler(IApplicationContext context)
         {
             _context = context;
         }
 
-        public Task<PagedResult<StreamerViewModel>> Handle(GetStreamers request, CancellationToken cancellationToken)
+        public Task<PagedResult<StreamerViewModel>> Handle(SearchStreamers request, CancellationToken cancellationToken)
         {
             var streams = from stream in _context.Streamers
                           where stream.Status == StreamerStatus.Verified
@@ -52,6 +52,8 @@ namespace application.Query.Handlers
                                   Id = stream.Id,
                                   Name = stream.Name,
                                   Description = stream.Description,
+                                  IsStreamManagedByCurrentUser = request.Email != null &&
+                                                                 request.Email == stream.Email,
                                   Platforms = from p in _context.StreamerPlatforms
                                               where p.StreamerId == stream.Id
                                               select new PlatformViewModel

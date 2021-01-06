@@ -147,6 +147,11 @@ Validation Errors
         padding: 5px 10px;
     }
 
+
+        .streamer-cards .streamer-card .claim-stream-link {
+            font-size: .9em;
+        }
+
         .streamer-cards .streamer-card .streamer-technologies {
             display: flex;
             flex-wrap: wrap;

@@ -2,6 +2,7 @@ using application.Extensions;
 using Auth0.AuthenticationApi;
 using Auth0.ManagementApi;
 using core;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -11,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using site.Infrastructure;
+using site.Infrastructure.Behaviors;
 using site.Infrastructure.Validators;
 using Syncfusion.Blazor;
 
@@ -66,6 +68,8 @@ namespace site
 
             services.AddHttpContextAccessor();
             services.AddHandlers();
+
+            services.AddSingleton(typeof(IPipelineBehavior<,>), typeof(AttachUserBehavior<,>));
 
             services.AddScoped<IManagementConnection, HttpClientManagementConnection>();
             services.AddScoped<IAuthenticationConnection, HttpClientAuthenticationConnection>();

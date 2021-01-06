@@ -19,7 +19,10 @@
             }
         </div>
         <AuthorizeView Roles="Streamer">
-            <button class="btn-primary">This is my stream</button>
+            @if (!@Streamer.IsStreamManagedByCurrentUser)
+            {
+                <a href="#" class="claim-stream-link">This is my stream</a>
+            }
         </AuthorizeView>
     </div>
 </div>
