@@ -28,6 +28,7 @@ namespace application.Commands.Handlers
 
             _context.Insert(new StreamerClaimRequest
             {
+                ClaimedStreamerId = request.ClaimedStreamerId,
                 CurrentEmail = claimedStream.Email,
                 UpdatedEmail = request.Email,
                 Created = DateTime.UtcNow

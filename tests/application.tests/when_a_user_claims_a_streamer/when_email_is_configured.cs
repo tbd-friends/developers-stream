@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading;
 using application.Commands;
 using application.Commands.Handlers;
@@ -60,6 +61,7 @@ namespace application.tests.when_a_user_claims_a_streamer
                 ctx.Insert(
                     It.Is<StreamerClaimRequest>(
                         r =>
+                            r.ClaimedStreamerId == ClaimedStreamerId &&
                             r.CurrentEmail == CurrentEmail &&
                             r.UpdatedEmail == UserEmail &&
                             r.IsApproved == false)), Times.Once);
