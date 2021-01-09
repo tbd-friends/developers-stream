@@ -1,0 +1,88 @@
+﻿@using MediatR
+@using administration.viewmodels
+@using application.Commands.Administration
+@using application.Query.Administration
+<h5>Pending Streamers</h5>
+<SfGrid DataSource="@Streamers">
+    <GridTemplates>
+        <DetailTemplate>
+            @{
+                var streamer = (context as StreamerViewModel);
+                <SfGrid TValue="PlatformViewModel" DataSource="streamer.Platforms" AllowPaging="true">
+                    <GridPageSettings PageSize="8"></GridPageSettings>
+                    <GridColumns>
+                        <GridColumn Field=@nameof(PlatformViewModel.Name) HeaderText="Name" Width="75"> </GridColumn>
+                        <GridColumn Field=@nameof(PlatformViewModel.Url) HeaderText="Url" Width="200"></GridColumn>
+                    </GridColumns>
+                </SfGrid>
+            }
+        </DetailTemplate>
+    </GridTemplates>
+    <GridColumns>
+        <GridColumn Field=@nameof(StreamerViewModel.Name) HeaderText="Name" Width="110"> </GridColumn>
+        <GridColumn Field=@nameof(StreamerViewModel.Description) HeaderText="Description" Width="450"></GridColumn>
+        <GridColumn Field=@nameof(StreamerViewModel.IsStreamer) HeaderText="Streamer" Width="100">
+            <Template>
+                @{
+                    var isStreamer = (context as StreamerViewModel).IsStreamer;
+                    <div>@( isStreamer ? "Yes" : "No")</div>
+                }
+            </Template>
+        </GridColumn>
+        <GridColumn Field=@nameof(StreamerViewModel.Technologies) HeaderText="Technologies">
+            <Template>
+                @{
+                    var technologies = (context as StreamerViewModel).Technologies;
+
+                    <div>@(string.Join(", ", technologies.ToArray()))</div>
+                }
+            </Template>
+        </GridColumn>
+        <GridColumn HeaderText="Actions" Width="300">
+            <Template>
+                @{
+                    var model = (context as StreamerViewModel);
+                    <SfButton IsPrimary="true" @onclick="(() => VerifyStreamer(model))">Verify</SfButton>
+                    <SfButton Disabled="@(model.IsRejected)" @onclick="(() => RejectStreamer(model))">Reject</SfButton>
+                    <SfButton Disabled="@(!model.IsRejected)" @onclick="(() => DeleteStreamer(model))">Delete</SfButton>
+                }
+            </Template>
+        </GridColumn>
+    </GridColumns>
+</SfGrid>
+@code {
+    [Inject] private IMediator Mediator { get; set; }
+
+    private IEnumerable<StreamerViewModel> Streamers { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadStreamers();
+    }
+
+    private async Task LoadStreamers()
+    {
+        Streamers = await Mediator.Send(new GetPendingStreamers());
+    }
+
+    protected async Task VerifyStreamer(StreamerViewModel model)
+    {
+        await Mediator.Send(new VerifyStreamer { Id = model.Id });
+
+        await LoadStreamers();
+    }
+
+    protected async Task RejectStreamer(StreamerViewModel model)
+    {
+        await Mediator.Send(new RejectStreamer() { Id = model.Id });
+
+        await LoadStreamers();
+    }
+
+    protected async Task DeleteStreamer(StreamerViewModel model)
+    {
+        await Mediator.Send(new DeleteStreamer { Id = model.Id });
+
+        await LoadStreamers();
+    }
+}
