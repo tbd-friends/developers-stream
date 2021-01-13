@@ -1,0 +1,54 @@
+﻿@using viewmodels
+@using MediatR
+@using application.Query.Administration
+@using application.Commands.Administration
+<h5>Pending Claims</h5>
+
+<SfGrid DataSource="@Streamers">
+    <GridColumns>
+        <GridColumn Field=@nameof(StreamerClaimViewModel.Name) HeaderText="Name" Width="200"></GridColumn>
+        <GridColumn Field=@nameof(StreamerClaimViewModel.CurrentEmail) HeaderText="Current Email" Width="250"> </GridColumn>
+        <GridColumn Field=@nameof(StreamerClaimViewModel.UpdatedEmail) HeaderText="Updated Email" Width="250"></GridColumn>
+        <GridColumn Field=@nameof(StreamerClaimViewModel.Created) HeaderText="Created" Width="200" Format="d" Type="ColumnType.Date"></GridColumn>
+
+        <GridColumn HeaderText="Actions" Width="300">
+            <Template>
+                @{
+                    var model = (context as StreamerClaimViewModel);
+                    <SfButton IsPrimary="true" @onclick="(() => ApproveClaimRequest(model))">Approve</SfButton>
+                    <SfButton @onclick="(() => RejectClaimRequest(model))">Reject</SfButton>
+                }
+            </Template>
+        </GridColumn>
+    </GridColumns>
+</SfGrid>
+
+@code {
+    [Inject] private IMediator Mediator { get; set; }
+
+    private IEnumerable<StreamerClaimViewModel> Streamers { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadClaims();
+    }
+
+    private async Task LoadClaims()
+    {
+        Streamers = await Mediator.Send(new GetPendingClaims());
+    }
+
+    protected async Task ApproveClaimRequest(StreamerClaimViewModel model)
+    {
+        await Mediator.Send(new ApproveClaimRequest { ClaimRequestId = model.Id });
+
+        await LoadClaims();
+    }
+
+    protected async Task RejectClaimRequest(StreamerClaimViewModel model)
+    {
+        await Mediator.Send(new RejectClaimRequest { ClaimRequestId = model.Id });
+
+        await LoadClaims();
+    }
+}

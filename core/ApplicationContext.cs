@@ -8,11 +8,13 @@ namespace core
     public class ApplicationContext : DbContext, IApplicationContext
     {
         IQueryable<AvailableTechnology> IApplicationContext.AvailableTechnologies => AvailableTechnologies;
+        IQueryable<StreamerClaimRequest> IApplicationContext.StreamerClaimRequests => StreamerClaimRequests;
         IQueryable<Streamer> IApplicationContext.Streamers => Streamers;
         IQueryable<StreamerPlatform> IApplicationContext.StreamerPlatforms => StreamerPlatforms;
         IQueryable<StreamerTechnology> IApplicationContext.StreamerTechnologies => StreamerTechnologies;
 
         public DbSet<AvailableTechnology> AvailableTechnologies { get; set; }
+        public DbSet<StreamerClaimRequest> StreamerClaimRequests { get; set; }
         public DbSet<Streamer> Streamers { get; set; }
         public DbSet<StreamerPlatform> StreamerPlatforms { get; set; }
         public DbSet<StreamerTechnology> StreamerTechnologies { get; set; }

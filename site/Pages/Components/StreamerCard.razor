@@ -1,4 +1,6 @@
 ﻿@using viewmodels
+@using MediatR
+@using application.Commands
 <div class="streamer-card">
     <div class="streamer-card-content">
         <h5 class="streamer-card-title">@Streamer.Name</h5>
@@ -19,7 +21,10 @@
             }
         </div>
         <AuthorizeView Roles="Streamer">
-            <button class="btn-primary">This is my stream</button>
+            @if (@Streamer.CanStreamBeClaimed)
+            {
+                <a @onclick="(() => ClaimStreamer(Streamer.Id))" class="claim-stream-link">This is my stream</a>
+            }
         </AuthorizeView>
     </div>
 </div>
@@ -27,4 +32,13 @@
 {
     [Parameter]
     public StreamerViewModel Streamer { get; set; }
+
+    [Inject]
+    public IMediator Mediator { get; set; }
+
+    protected async Task ClaimStreamer(Guid streamerId)
+    {
+        await Mediator.Send(new MakeClaimRequest { ClaimedStreamerId = streamerId });
+    }
+
 }
