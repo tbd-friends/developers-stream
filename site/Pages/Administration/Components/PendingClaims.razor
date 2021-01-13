@@ -15,6 +15,7 @@
                 @{
                     var model = (context as StreamerClaimViewModel);
                     <SfButton IsPrimary="true" @onclick="(() => ApproveClaimRequest(model))">Approve</SfButton>
+                    <SfButton @onclick="(() => RejectClaimRequest(model))">Reject</SfButton>
                 }
             </Template>
         </GridColumn>
@@ -39,6 +40,13 @@
     protected async Task ApproveClaimRequest(StreamerClaimViewModel model)
     {
         await Mediator.Send(new ApproveClaimRequest { ClaimRequestId = model.Id });
+
+        await LoadClaims();
+    }
+
+    protected async Task RejectClaimRequest(StreamerClaimViewModel model)
+    {
+        await Mediator.Send(new RejectClaimRequest { ClaimRequestId = model.Id });
 
         await LoadClaims();
     }
