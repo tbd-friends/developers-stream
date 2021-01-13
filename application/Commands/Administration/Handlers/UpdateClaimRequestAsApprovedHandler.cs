@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using core;
+using core.Enums;
 using MediatR;
 
 namespace application.Commands.Administration.Handlers
@@ -20,7 +21,7 @@ namespace application.Commands.Administration.Handlers
         {
             var claimRequest = _context.StreamerClaimRequests.Single(cr => cr.Id == request.ClaimRequestId);
 
-            claimRequest.IsApproved = true;
+            claimRequest.Status = ClaimRequestStatus.Approved;
             claimRequest.Updated = DateTime.UtcNow;
 
             _context.SaveChanges();

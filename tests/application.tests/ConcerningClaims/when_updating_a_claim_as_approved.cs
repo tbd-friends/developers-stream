@@ -4,6 +4,7 @@ using System.Threading;
 using application.Commands.Administration;
 using application.Commands.Administration.Handlers;
 using core;
+using core.Enums;
 using core.Models;
 using FluentAssertions;
 using Moq;
@@ -31,7 +32,7 @@ namespace application.tests.ConcerningClaims
             ClaimRequest = new StreamerClaimRequest
             {
                 Id = ClaimRequestId,
-                IsApproved = false,
+                Status = ClaimRequestStatus.PendingApproval,
                 Updated = null
             };
 
@@ -56,7 +57,7 @@ namespace application.tests.ConcerningClaims
         [Fact]
         public void claim_is_marked_as_approved()
         {
-            ClaimRequest.IsApproved.Should().BeTrue();
+            ClaimRequest.Status.Should().Be(ClaimRequestStatus.Approved);
             ClaimRequest.Updated.Should().NotBeNull("Updated should be set when changing the record");
             ClaimRequest.Updated.Should().BeBefore(DateTime.UtcNow);
         }
