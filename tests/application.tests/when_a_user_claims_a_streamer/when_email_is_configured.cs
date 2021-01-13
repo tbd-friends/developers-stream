@@ -5,7 +5,9 @@ using System.Threading;
 using application.Commands;
 using application.Commands.Handlers;
 using core;
+using core.Enums;
 using core.Models;
+using FluentAssertions;
 using Moq;
 using Xunit;
 
@@ -18,6 +20,7 @@ namespace application.tests.when_a_user_claims_a_streamer
         private Guid ClaimedStreamerId = Guid.Parse("F889018E-5D64-48E3-AE82-24A9FA3AF5FE");
         private string CurrentEmail = "CurrentEmail";
         private string UserEmail = "LoggedInUserEmail";
+        private StreamerClaimRequest Output;
 
         public when_email_is_configured()
         {
@@ -41,6 +44,12 @@ namespace application.tests.when_a_user_claims_a_streamer
                         Email = CurrentEmail
                     }
                 }.AsQueryable());
+
+            Context.Setup(ctx => ctx.Insert(It.IsAny<StreamerClaimRequest>())).Callback(
+                (StreamerClaimRequest request) =>
+                {
+                    Output = request;
+                });
         }
 
         private void Act()
@@ -55,16 +64,27 @@ namespace application.tests.when_a_user_claims_a_streamer
         }
 
         [Fact]
-        public void claim_is_made()
+        public void claim_is_made_for_claimed_streamer_id()
         {
-            Context.Verify(ctx =>
-                ctx.Insert(
-                    It.Is<StreamerClaimRequest>(
-                        r =>
-                            r.ClaimedStreamerId == ClaimedStreamerId &&
-                            r.CurrentEmail == CurrentEmail &&
-                            r.UpdatedEmail == UserEmail &&
-                            r.IsApproved == false)), Times.Once);
+            Output.ClaimedStreamerId.Should().Be(ClaimedStreamerId);
+        }
+
+        [Fact]
+        public void claim_is_created_in_pending_approval_status()
+        {
+            Output.Status.Should().Be(ClaimRequestStatus.PendingApproval);
+        }
+
+        [Fact]
+        public void claim_current_email_is_current_streamer_registered_email()
+        {
+            Output.CurrentEmail.Should().Be(CurrentEmail);
+        }
+
+        [Fact]
+        public void claim_updated_email_is_requesting_users_email()
+        {
+            Output.UpdatedEmail.Should().Be(UserEmail);
         }
 
         [Fact]

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using core;
+using core.Enums;
 using core.Models;
 using MediatR;
 
@@ -31,7 +32,8 @@ namespace application.Commands.Handlers
                 ClaimedStreamerId = request.ClaimedStreamerId,
                 CurrentEmail = claimedStream.Email,
                 UpdatedEmail = request.Email,
-                Created = DateTime.UtcNow
+                Created = DateTime.UtcNow,
+                Status = ClaimRequestStatus.PendingApproval
             });
 
             _context.SaveChanges();
