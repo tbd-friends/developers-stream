@@ -23,10 +23,12 @@ namespace application.Query.Administration.Handlers
         public Task<IEnumerable<StreamerClaimViewModel>> Handle(GetPendingClaims request, CancellationToken cancellationToken)
         {
             var pending = from sc in _context.StreamerClaimRequests
+                          join s in _context.Streamers on sc.ClaimedStreamerId equals s.Id
                           where sc.Status == ClaimRequestStatus.PendingApproval
                           select new StreamerClaimViewModel
                           {
                               Id = sc.Id,
+                              Name = s.Name,
                               CurrentEmail = sc.CurrentEmail,
                               UpdatedEmail = sc.UpdatedEmail,
                               Created = sc.Created

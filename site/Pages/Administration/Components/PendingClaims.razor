@@ -6,6 +6,7 @@
 
 <SfGrid DataSource="@Streamers">
     <GridColumns>
+        <GridColumn Field=@nameof(StreamerClaimViewModel.Name) HeaderText="Name" Width="200"></GridColumn>
         <GridColumn Field=@nameof(StreamerClaimViewModel.CurrentEmail) HeaderText="Current Email" Width="250"> </GridColumn>
         <GridColumn Field=@nameof(StreamerClaimViewModel.UpdatedEmail) HeaderText="Updated Email" Width="250"></GridColumn>
         <GridColumn Field=@nameof(StreamerClaimViewModel.Created) HeaderText="Created" Width="200" Format="d" Type="ColumnType.Date"></GridColumn>
