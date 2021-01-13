@@ -21,7 +21,7 @@
             }
         </div>
         <AuthorizeView Roles="Streamer">
-            @if (!@Streamer.IsStreamManagedByCurrentUser)
+            @if (@Streamer.CanStreamBeClaimed)
             {
                 <a @onclick="(() => ClaimStreamer(Streamer.Id))" class="claim-stream-link">This is my stream</a>
             }

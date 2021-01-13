@@ -52,8 +52,12 @@ namespace application.Query.Handlers
                                   Id = stream.Id,
                                   Name = stream.Name,
                                   Description = stream.Description,
-                                  IsStreamManagedByCurrentUser = request.Email != null &&
-                                                                 request.Email == stream.Email,
+                                  CanStreamBeClaimed = request.Email != null &&
+                                                       request.Email != stream.Email &&
+                                                        !(from r in _context.StreamerClaimRequests
+                                                          where r.ClaimedStreamerId == stream.Id &&
+                                                                r.Status == ClaimRequestStatus.PendingApproval
+                                                          select r).Any(),
                                   Platforms = from p in _context.StreamerPlatforms
                                               where p.StreamerId == stream.Id
                                               select new PlatformViewModel
