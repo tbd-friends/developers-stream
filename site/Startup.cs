@@ -57,9 +57,9 @@ namespace site
             });
 
             services.AddDbContext<ApplicationContext>(ctx =>
-                ctx.UseSqlServer(Configuration.GetConnectionString("application")));
+                ctx.UseSqlServer(Configuration.GetConnectionString("application")), ServiceLifetime.Transient);
 
-            services.AddScoped<IApplicationContext, ApplicationContext>();
+            services.AddTransient<IApplicationContext, ApplicationContext>();
             services.AddScoped<RegistrationModelValidator>();
 
             services.AddSyncfusionBlazor();

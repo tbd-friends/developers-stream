@@ -2,6 +2,7 @@
 @using administration.viewmodels
 @using System.Linq
 @using System.Security.Claims
+@using application.Commands.Administration
 @using application.Query.Streamer
 @using MediatR
 
@@ -54,7 +55,7 @@
     <DialogTemplates>
         <Header>Forget about me</Header>
         <Content>
-            <p>This will remove all details about you, including all Streamers you currently have registered.</p>
+            <p>This will remove your details, including any streamers where you are listed as the Streamer.</p>
         </Content>
     </DialogTemplates>
     <DialogButtons>
@@ -94,8 +95,10 @@
 
     protected async Task ProceedWithRemove()
     {
-        await Task.Delay(1);
+        await Mediator.Send(new RemoveUser());
 
         DialogIsVisible = false;
+
+        // Should log out here
     }
 }
