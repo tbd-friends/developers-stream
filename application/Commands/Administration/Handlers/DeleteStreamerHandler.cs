@@ -15,7 +15,7 @@ namespace application.Commands.Administration.Handlers
             _context = context;
         }
 
-        public Task<Unit> Handle(DeleteStreamer request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DeleteStreamer request, CancellationToken cancellationToken)
         {
             var streamer = _context.Streamers.Single(s => s.Id == request.Id);
 
@@ -25,14 +25,16 @@ namespace application.Commands.Administration.Handlers
 
             _context.Delete(streamer);
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync(cancellationToken);
 
-            return Unit.Task;
+            return Unit.Value;
         }
 
         private void RemoveAssociatedPlatforms(DeleteStreamer request)
         {
-            var platforms = _context.StreamerPlatforms.Where(p => p.StreamerId == request.Id);
+            var platforms = _context
+                .StreamerPlatforms
+                .Where(p => p.StreamerId == request.Id);
 
             foreach (var platform in platforms)
             {
@@ -42,7 +44,9 @@ namespace application.Commands.Administration.Handlers
 
         private void RemoveAssociatedTechnologies(DeleteStreamer request)
         {
-            var technologies = _context.StreamerTechnologies.Where(p => p.StreamerId == request.Id);
+            var technologies = _context
+                .StreamerTechnologies
+                .Where(p => p.StreamerId == request.Id);
 
             foreach (var technology in technologies)
             {

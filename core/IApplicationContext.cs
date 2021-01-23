@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using core.Models;
 
 namespace core
@@ -12,6 +14,8 @@ namespace core
         IQueryable<StreamerTechnology> StreamerTechnologies { get; }
 
         int SaveChanges();
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+
         void Insert<TEntity>(TEntity entity) where TEntity : class;
         void Delete<TEntity>(TEntity entity) where TEntity : class;
     }

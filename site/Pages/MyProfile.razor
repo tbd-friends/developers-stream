@@ -1,8 +1,10 @@
 ﻿@page "/my-profile"
-@using MediatR
 @using administration.viewmodels
-@using application.Query.Streamer
+@using System.Linq
 @using System.Security.Claims
+@using application.Commands.Administration
+@using application.Query.Streamer
+@using MediatR
 
 <h3>My Profile</h3>
 
@@ -44,10 +46,30 @@
     </GridColumns>
 </SfGrid>
 
+@if (!DialogIsVisible)
+{
+    <SfButton IsPrimary="true" OnClick="@ShowRemoveDialog">Forget About Me</SfButton>
+}
+
+<SfDialog Width="335px" Target="#target" IsModal="true" @bind-Visible="DialogIsVisible">
+    <DialogTemplates>
+        <Header>Forget about me</Header>
+        <Content>
+            <p>This will remove your details, including any streamers where you are listed as the Streamer.</p>
+        </Content>
+    </DialogTemplates>
+    <DialogButtons>
+        <DialogButton Content="OK" IsPrimary="true" OnClick="@ProceedWithRemove" />
+        <DialogButton Content="CANCEL" IsPrimary="false" OnClick="@Cancel" />
+    </DialogButtons>
+    <DialogAnimationSettings Effect="@DialogEffect.None"></DialogAnimationSettings>
+</SfDialog>
 @code {
 
     [Inject] public IMediator Mediator { get; set; }
     [Inject] public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+
+    public bool DialogIsVisible { get; set; } = false;
 
     public IEnumerable<StreamerViewModel> Streamers { get; set; }
 
@@ -61,4 +83,22 @@
         });
     }
 
+    protected void ShowRemoveDialog()
+    {
+        DialogIsVisible = true;
+    }
+
+    protected void Cancel()
+    {
+        DialogIsVisible = false;
+    }
+
+    protected async Task ProceedWithRemove()
+    {
+        await Mediator.Send(new RemoveUser());
+
+        DialogIsVisible = false;
+
+        // Should log out here
+    }
 }
