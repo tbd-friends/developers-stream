@@ -5,6 +5,7 @@ namespace application.Infrastructure
     public interface IBaseRequestWithUser
     {
         string Email { get; set; }
+        string ProfileId { get; set; }
     }
 
     public interface IRequestWithUser : IBaseRequestWithUser, IRequest

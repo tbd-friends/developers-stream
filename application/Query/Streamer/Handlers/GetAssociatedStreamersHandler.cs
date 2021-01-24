@@ -19,7 +19,10 @@ namespace application.Query.Streamer.Handlers
         }
         public Task<IEnumerable<StreamerViewModel>> Handle(GetAssociatedStreamers request, CancellationToken cancellationToken)
         {
-            var streams = _context.Streamers.Where(s => s.Email == request.Email);
+            var streams = from rs in _context.RegisteredStreamers
+                          join s in _context.Streamers on rs.StreamerId equals s.Id
+                          where rs.Email == request.Email
+                          select s;
 
             var results = from stream in streams
                           select new StreamerViewModel

@@ -3,7 +3,7 @@ using MediatR;
 
 namespace application.Commands.Administration
 {
-    public class RejectClaimRequest : IRequest
+    public class ApproveOwnershipRequest : IRequest
     {
         public Guid ClaimRequestId { get; set; }
     }

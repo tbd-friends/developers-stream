@@ -47,16 +47,17 @@ namespace application.Query.Handlers
                     Results = from stream in streams.Skip((request.PageNumber - 1) * request.PageSize)
                             .Take(request.PageSize)
                             .AsEnumerable()
+                              join rs in _context.RegisteredStreamers on stream.Id equals rs.StreamerId
                               select new StreamerViewModel
                               {
                                   Id = stream.Id,
                                   Name = stream.Name,
                                   Description = stream.Description,
                                   CanStreamBeClaimed = request.Email != null &&
-                                                       request.Email != stream.Email &&
+                                                       request.Email != rs.Email &&
                                                         !(from r in _context.StreamerClaimRequests
                                                           where r.ClaimedStreamerId == stream.Id &&
-                                                                r.Status == ClaimRequestStatus.PendingApproval
+                                                                r.Status == OwnershipRequestStatus.PendingApproval
                                                           select r).Any(),
                                   Platforms = from p in _context.StreamerPlatforms
                                               where p.StreamerId == stream.Id

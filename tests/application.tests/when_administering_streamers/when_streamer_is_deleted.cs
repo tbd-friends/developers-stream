@@ -79,7 +79,7 @@ namespace application.tests.when_administering_streamers
         [Fact]
         public void changes_are_committed()
         {
-            _context.Verify(ctx => ctx.SaveChanges(), Times.Once());
+            _context.Verify(ctx => ctx.SaveChangesAsync(CancellationToken.None), Times.Once());
         }
     }
 }

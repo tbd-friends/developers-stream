@@ -40,14 +40,14 @@
 
     protected async Task ApproveClaimRequest(StreamerClaimViewModel model)
     {
-        await Mediator.Send(new ApproveClaimRequest { ClaimRequestId = model.Id });
+        await Mediator.Send(new ApproveOwnershipRequest { ClaimRequestId = model.Id });
 
         await LoadClaims();
     }
 
     protected async Task RejectClaimRequest(StreamerClaimViewModel model)
     {
-        await Mediator.Send(new RejectClaimRequest { ClaimRequestId = model.Id });
+        await Mediator.Send(new RejectOwnershipRequest { ClaimRequestId = model.Id });
 
         await LoadClaims();
     }

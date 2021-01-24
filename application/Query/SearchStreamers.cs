@@ -9,5 +9,6 @@ namespace application.Query
         public int PageSize { get; set; }
         public int PageNumber { get; set; }
         public string Email { get; set; }
+        public string ProfileId { get; set; }
     }
 }

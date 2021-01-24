@@ -8,20 +8,20 @@ using MediatR;
 
 namespace application.Commands.Administration.Handlers
 {
-    public class RejectClaimRequestHandler : IRequestHandler<RejectClaimRequest>
+    public class RejectOwnershipRequestHandler : IRequestHandler<RejectOwnershipRequest>
     {
         private readonly IApplicationContext _context;
 
-        public RejectClaimRequestHandler(IApplicationContext context)
+        public RejectOwnershipRequestHandler(IApplicationContext context)
         {
             _context = context;
         }
 
-        public Task<Unit> Handle(RejectClaimRequest request, CancellationToken cancellationToken)
+        public Task<Unit> Handle(RejectOwnershipRequest request, CancellationToken cancellationToken)
         {
             var claimRequest = _context.StreamerClaimRequests.Single(rq => rq.Id == request.ClaimRequestId);
 
-            claimRequest.Status = ClaimRequestStatus.Rejected;
+            claimRequest.Status = OwnershipRequestStatus.Rejected;
             claimRequest.Updated = DateTime.UtcNow;
 
             _context.SaveChanges();
