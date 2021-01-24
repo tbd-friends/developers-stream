@@ -55,7 +55,7 @@
     <DialogTemplates>
         <Header>Forget about me</Header>
         <Content>
-            <p>This will remove your details, including any streamers where you are listed as the Streamer.</p>
+            <p>This will remove your details from developers.stream. Any streams you are listed as the Streamer on will also be removed. Any streams you are associated with will be left without a registered owner, but will not be removed. </p>
         </Content>
     </DialogTemplates>
     <DialogButtons>
@@ -68,6 +68,7 @@
 
     [Inject] public IMediator Mediator { get; set; }
     [Inject] public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+    [Inject] public NavigationManager NavigationManager { get; set; }
 
     public bool DialogIsVisible { get; set; } = false;
 
@@ -99,6 +100,6 @@
 
         DialogIsVisible = false;
 
-        // Should log out here
+        NavigationManager.NavigateTo("logout", forceLoad: true);
     }
 }

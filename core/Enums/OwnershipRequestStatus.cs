@@ -1,6 +1,6 @@
 ﻿namespace core.Enums
 {
-    public enum ClaimRequestStatus
+    public enum OwnershipRequestStatus
     {
         PendingApproval = 1,
         Rejected,

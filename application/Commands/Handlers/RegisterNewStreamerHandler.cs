@@ -9,28 +9,29 @@ namespace application.Commands.Handlers
 {
     public class RegisterNewStreamerHandler : IRequestHandler<RegisterNewStreamer>
     {
+        private readonly IMediator _mediator;
         private readonly IApplicationContext _context;
 
-        public RegisterNewStreamerHandler(IApplicationContext context)
+        public RegisterNewStreamerHandler(IMediator mediator, IApplicationContext context)
         {
+            _mediator = mediator;
             _context = context;
         }
 
-        public Task<Unit> Handle(RegisterNewStreamer request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(RegisterNewStreamer request, CancellationToken cancellationToken)
         {
-            InsertStreamerData(request);
+            await InsertStreamerData(request, cancellationToken);
 
-            return Unit.Task;
+            return Unit.Value;
         }
 
-        private void InsertStreamerData(RegisterNewStreamer request)
+        private async Task InsertStreamerData(RegisterNewStreamer request, CancellationToken cancellationToken)
         {
             var streamer = new Streamer
             {
                 Name = request.Name,
                 Description = request.Description,
                 IsStreamer = request.IsStreamer,
-                Email = request.Email,
                 Status = StreamerStatus.PendingVerification
             };
 
@@ -58,7 +59,14 @@ namespace application.Commands.Handlers
                 }
             }
 
-            _context.SaveChanges();
+            await _mediator.Send(new AssociateStreamerWithRegistrar
+            {
+                StreamerId = streamer.Id,
+                Email = request.Email,
+                ProfileId = request.ProfileId
+            }, cancellationToken);
+
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }

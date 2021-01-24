@@ -21,11 +21,12 @@ namespace site.Infrastructure.Behaviors
         {
             var principal = _context.HttpContext?.User;
 
-            if (principal != null && 
-                principal.HasClaim(c => c.Type == ClaimTypes.Email) && 
+            if (principal != null &&
+                principal.HasClaim(c => c.Type == ClaimTypes.Email) &&
                 request is IBaseRequestWithUser rq)
             {
                 rq.Email = principal.Claims.SingleOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+                rq.ProfileId = principal.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             }
 
             var response = await next();

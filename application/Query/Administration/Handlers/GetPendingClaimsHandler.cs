@@ -24,7 +24,7 @@ namespace application.Query.Administration.Handlers
         {
             var pending = from sc in _context.StreamerClaimRequests
                           join s in _context.Streamers on sc.ClaimedStreamerId equals s.Id
-                          where sc.Status == ClaimRequestStatus.PendingApproval
+                          where sc.Status == OwnershipRequestStatus.PendingApproval
                           select new StreamerClaimViewModel
                           {
                               Id = sc.Id,

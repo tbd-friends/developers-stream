@@ -8,7 +8,8 @@ namespace core
     public interface IApplicationContext
     {
         IQueryable<AvailableTechnology> AvailableTechnologies { get; }
-        IQueryable<StreamerClaimRequest> StreamerClaimRequests { get; }
+        IQueryable<RegisteredStreamer> RegisteredStreamers { get; }
+        IQueryable<StreamerOwnershipRequest> StreamerClaimRequests { get; }
         IQueryable<Streamer> Streamers { get; }
         IQueryable<StreamerPlatform> StreamerPlatforms { get; }
         IQueryable<StreamerTechnology> StreamerTechnologies { get; }

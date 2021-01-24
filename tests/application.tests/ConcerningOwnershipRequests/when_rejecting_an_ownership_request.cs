@@ -12,15 +12,17 @@ using Xunit;
 
 namespace application.tests.ConcerningClaims
 {
-    public class when_updating_a_claim_as_approved
+    public class when_rejecting_an_ownership_request
     {
         private Mock<IApplicationContext> Context;
-        private UpdateClaimRequestAsApprovedHandler Subject;
+        private RejectOwnershipRequestHandler Subject;
 
-        private StreamerClaimRequest ClaimRequest;
-        private readonly Guid ClaimRequestId = new Guid("58885A43-6CC4-4A41-ABB6-B25253862F40");
+        private readonly Guid ClaimRequestId = new Guid("87F38115-775E-41F7-A1FC-3A5BDB1FF754");
+        private readonly Guid ClaimedStreamerId = new Guid("E4FDB7C3-DEEF-4621-9E4D-5DB1EF27A4C2");
 
-        public when_updating_a_claim_as_approved()
+        private StreamerOwnershipRequest _ownershipRequest;
+
+        public when_rejecting_an_ownership_request()
         {
             Arrange();
 
@@ -29,37 +31,41 @@ namespace application.tests.ConcerningClaims
 
         private void Arrange()
         {
-            ClaimRequest = new StreamerClaimRequest
+            _ownershipRequest = new StreamerOwnershipRequest
             {
                 Id = ClaimRequestId,
-                Status = ClaimRequestStatus.PendingApproval,
-                Updated = null
+                ClaimedStreamerId = ClaimedStreamerId,
+                Status = OwnershipRequestStatus.PendingApproval
             };
 
             Context = new Mock<IApplicationContext>();
 
             Context.Setup(ctx => ctx.StreamerClaimRequests).Returns(new[]
             {
-                ClaimRequest
+                _ownershipRequest
             }.AsQueryable());
 
-            Subject = new UpdateClaimRequestAsApprovedHandler(Context.Object);
+            Subject = new RejectOwnershipRequestHandler(Context.Object);
         }
 
         private void Act()
         {
-            Subject.Handle(new UpdateClaimRequestAsApproved
+            Subject.Handle(new RejectOwnershipRequest
             {
                 ClaimRequestId = ClaimRequestId
             }, CancellationToken.None).GetAwaiter().GetResult();
         }
 
         [Fact]
-        public void claim_is_marked_as_approved()
+        public void request_claim_status_is_updated_as_rejected()
         {
-            ClaimRequest.Status.Should().Be(ClaimRequestStatus.Approved);
-            ClaimRequest.Updated.Should().NotBeNull("Updated should be set when changing the record");
-            ClaimRequest.Updated.Should().BeBefore(DateTime.UtcNow);
+            _ownershipRequest.Status.Should().Be(OwnershipRequestStatus.Rejected);
+        }
+
+        [Fact]
+        public void request_claim_updated_date_is_current()
+        {
+            _ownershipRequest.Updated.Should().BeBefore(DateTime.UtcNow);
         }
 
         [Fact]

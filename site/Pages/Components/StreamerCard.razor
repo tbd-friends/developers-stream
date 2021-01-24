@@ -38,7 +38,7 @@
 
     protected async Task ClaimStreamer(Guid streamerId)
     {
-        await Mediator.Send(new MakeClaimRequest { ClaimedStreamerId = streamerId });
+        await Mediator.Send(new RequestOwnership { ClaimedStreamerId = streamerId });
     }
 
 }
