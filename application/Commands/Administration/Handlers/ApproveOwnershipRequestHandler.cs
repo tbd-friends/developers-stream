@@ -19,13 +19,30 @@ namespace application.Commands.Administration.Handlers
 
         public async Task<Unit> Handle(ApproveOwnershipRequest request, CancellationToken cancellationToken)
         {
-            var claimRequest = _context.StreamerClaimRequests.Single(cr => cr.Id == request.ClaimRequestId);
+            var claim =
+                (from cr in _context.StreamerClaimRequests
+                 join rs in _context.RegisteredStreamers on cr.ClaimedStreamerId equals rs.StreamerId into rsx
+                 from owner in rsx.DefaultIfEmpty()
+                 where cr.Id == request.ClaimRequestId
+                 select new
+                 {
+                     Request = cr,
+                     CurrentOwner = owner
+                 }).Single();
+
+            if (claim.CurrentOwner != null)
+            {
+                await _mediator.Send(new RemoveRegisteredStreamer
+                {
+                    Id = claim.CurrentOwner.Id
+                }, cancellationToken);
+            }
 
             await _mediator.Send(new AssociateStreamerWithRegistrar
             {
-                StreamerId = claimRequest.ClaimedStreamerId,
-                Email = claimRequest.UpdatedEmail,
-                ProfileId = claimRequest.ProfileId
+                StreamerId = claim.Request.ClaimedStreamerId,
+                Email = claim.Request.UpdatedEmail,
+                ProfileId = claim.Request.ProfileId
             }, cancellationToken);
 
             await _mediator.Send(new UpdateOwnershipRequestAsApproved { ClaimRequestId = request.ClaimRequestId },

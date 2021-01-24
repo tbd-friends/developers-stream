@@ -19,7 +19,9 @@ namespace application.tests.ConcerningRemovingUser
 
         private RemoveUserHandler Subject;
 
-        private const string EmailToRemove = "EmailToRemove";
+        private const string EmailToRemove = "email-to-remove";
+        private const string ProfileIdToRemove = "profile-id-to-remove";
+
         private readonly Guid RegisteredStreamerToRemoveId = Guid.Parse("8777C2D9-D3E5-46C6-A4AD-3616EBED658C");
         private readonly Guid StreamerToRemoveId = Guid.Parse("08360B7A-CE2D-4AB4-B221-AF76B492E3F4");
 
@@ -55,7 +57,8 @@ namespace application.tests.ConcerningRemovingUser
         {
             Subject.Handle(new RemoveUser
             {
-                Email = EmailToRemove
+                Email = EmailToRemove,
+                ProfileId = ProfileIdToRemove
             }, CancellationToken.None).GetAwaiter().GetResult();
         }
 
