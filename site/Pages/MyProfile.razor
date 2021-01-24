@@ -68,6 +68,7 @@
 
     [Inject] public IMediator Mediator { get; set; }
     [Inject] public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+    [Inject] public NavigationManager NavigationManager { get; set; }
 
     public bool DialogIsVisible { get; set; } = false;
 
@@ -99,6 +100,6 @@
 
         DialogIsVisible = false;
 
-        // Should log out here
+        NavigationManager.NavigateTo("logout", forceLoad: true);
     }
 }
