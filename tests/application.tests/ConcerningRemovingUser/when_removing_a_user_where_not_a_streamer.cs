@@ -41,7 +41,10 @@ namespace application.tests.ConcerningRemovingUser
             {
                 new RegisteredStreamer
                 {
-                    Id = RegisteredStreamerToRemoveId, Email = EmailToRemove, StreamerId = StreamerToRemoveId, ProfileId = "Profile"
+                    Id = RegisteredStreamerToRemoveId, 
+                    Email = EmailToRemove, 
+                    StreamerId = StreamerToRemoveId, 
+                    ProfileId = "Profile"
                 }
             }.AsQueryable());
 
@@ -66,7 +69,8 @@ namespace application.tests.ConcerningRemovingUser
         public void remove_registered_streamer_is_called()
         {
             Mediator.Verify(m =>
-                    m.Send(It.Is<RemoveRegisteredStreamer>(ds => ds.Id == RegisteredStreamerToRemoveId),
+                    m.Send(It.Is<RemoveRegisteredStreamer>(ds => 
+                            ds.Id == RegisteredStreamerToRemoveId),
                         CancellationToken.None),
                 Times.Once);
         }
