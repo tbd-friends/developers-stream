@@ -12,16 +12,18 @@ using Xunit;
 
 namespace application.tests.when_a_user_makes_an_ownership_claim
 {
-    public class when_not_currently_owned_by_another_user
+    public class when_streamer_not_currently_owned_but_others_are
     {
         private Mock<IApplicationContext> Context;
         private RequestOwnershipHandler Subject;
         private readonly Guid ClaimedStreamerId = Guid.Parse("EFF33F3E-85CF-4544-B9F1-88710FAA5F12");
+        private readonly Guid OtherStreamerId = Guid.Parse("6D5EB171-FB7B-4BF2-BD21-98AF80976D5F");
         private string RequestingUserEmail = "requesting-user-email";
+        private string OtherStreamerEmail = "other-streamer-email";
 
         private StreamerOwnershipRequest Output;
 
-        public when_not_currently_owned_by_another_user()
+        public when_streamer_not_currently_owned_but_others_are()
         {
             Arrange();
 
@@ -40,6 +42,21 @@ namespace application.tests.when_a_user_makes_an_ownership_claim
                     new Streamer()
                     {
                         Id = ClaimedStreamerId
+                    },
+                    new Streamer
+                    {
+                        Id = OtherStreamerId
+                    }
+                }.AsQueryable());
+
+            Context.Setup(ctx => ctx.RegisteredStreamers)
+                .Returns(new[]
+                {
+                    new RegisteredStreamer
+                    {
+                        Email = OtherStreamerEmail,
+                        ProfileId = "does-not-matter",
+                        StreamerId = OtherStreamerId
                     }
                 }.AsQueryable());
 
@@ -59,6 +76,7 @@ namespace application.tests.when_a_user_makes_an_ownership_claim
                 Email = RequestingUserEmail
             }, CancellationToken.None).GetAwaiter().GetResult();
         }
+
 
         [Fact]
         public void ownership_request_is_made_for_streamer_id()
