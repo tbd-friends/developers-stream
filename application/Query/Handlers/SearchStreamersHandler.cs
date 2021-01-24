@@ -48,13 +48,15 @@ namespace application.Query.Handlers
                             .Take(request.PageSize)
                             .AsEnumerable()
                               join rs in _context.RegisteredStreamers on stream.Id equals rs.StreamerId
+                                into rsx
+                              from registered in rsx.DefaultIfEmpty()
                               select new StreamerViewModel
                               {
                                   Id = stream.Id,
                                   Name = stream.Name,
                                   Description = stream.Description,
                                   CanStreamBeClaimed = request.Email != null &&
-                                                       request.Email != rs.Email &&
+                                                       request.Email != registered?.Email &&
                                                         !(from r in _context.StreamerClaimRequests
                                                           where r.ClaimedStreamerId == stream.Id &&
                                                                 r.Status == OwnershipRequestStatus.PendingApproval
