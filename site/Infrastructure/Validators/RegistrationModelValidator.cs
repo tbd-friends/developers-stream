@@ -8,11 +8,6 @@ namespace site.Infrastructure.Validators
     {
         public RegistrationModelValidator()
         {
-            RuleFor(x => x.Email)
-                .EmailAddress()
-                .NotEmpty()
-                .WithMessage("An email is required so we can contact someone if there are issues.");
-
             RuleFor(x => x.Name)
                 .MinimumLength(3)
                 .NotEmpty()

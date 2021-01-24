@@ -24,13 +24,6 @@
             <EditForm Model="Model" OnValidSubmit="Register">
                 <FluentValidationValidator ValidatorType=typeof(RegistrationModelValidator) />
                 <div class="col s12">
-                    <SfTextBox Value="@(login.User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.Email)?.Value)"
-                               Readonly="true"
-                               Placeholder="Email Address"
-                               FloatLabelType="FloatLabelType.Auto" />
-                    <ValidationMessage For="() => (Model.Email)" />
-                </div>
-                <div class="col s12">
                     <SfTextBox @bind-Value="Model.Name"
                                FloatLabelType="FloatLabelType.Auto"
                                Placeholder="Real Name or Alias" />
@@ -77,13 +70,6 @@
     protected override async Task OnInitializedAsync()
     {
         Model = new RegistrationModel();
-
-        var currentEmail = (await AuthenticationProvider.GetAuthenticationStateAsync()).User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-
-        if (currentEmail != null)
-        {
-            Model.Email = currentEmail;
-        }
     }
 
     public async void Register()
@@ -91,7 +77,6 @@
         await Mediator.Send(new RegisterNewStreamer
         {
             Name = Model.Name,
-            Email = Model.Email,
             Description = Model.Description,
             IsStreamer = Model.IsStreamer,
             Platforms = Model.Platforms.Select(m => new RegisterNewStreamer.Platform { Name = m.Name, Url = m.Url }),
