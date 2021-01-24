@@ -10,68 +10,50 @@
 <h3>Register Streamer</h3>
 
 <div class="row">
-    <AuthorizeView>
+    <AuthorizeView Context="login">
         <NotAuthorized>
             <div class="card">
                 <div class="card-content">
                     <div class="card-title">Login</div>
-                    <p>If you are registering your own streams, consider logging in. This will allow you to update the profile information after it is entered.</p>
+                    <p>Registering a Streamer, whether yourself or someone else requires you be logged in.</p>
                     <a target="_self" href="login?redirectUri=/register/register-streamer" class="btn light-blue waves-effect waves-light">Login</a>
                 </div>
             </div>
         </NotAuthorized>
-    </AuthorizeView>
-    <EditForm Model="Model" OnValidSubmit="Register">
-        <FluentValidationValidator ValidatorType=typeof(RegistrationModelValidator) />
-
-        <AuthorizeView Context="login">
-            <Authorized>
+        <Authorized>
+            <EditForm Model="Model" OnValidSubmit="Register">
+                <FluentValidationValidator ValidatorType=typeof(RegistrationModelValidator) />
                 <div class="col s12">
-                    <SfTextBox Value="@(login.User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.Email)?.Value)"
-                               Readonly="true"
-                               Placeholder="Email Address"
-                               FloatLabelType="FloatLabelType.Auto" />
-                    <ValidationMessage For="() => (Model.Email)" />
-                </div>
-            </Authorized>
-            <NotAuthorized>
-                <div class="col s12">
-                    <SfTextBox @bind-Value="Model.Email"
+                    <SfTextBox @bind-Value="Model.Name"
                                FloatLabelType="FloatLabelType.Auto"
-                               Placeholder="Email Address" />
-                    <ValidationMessage For="() => Model.Email" />
+                               Placeholder="Real Name or Alias" />
+                    <ValidationMessage For="() => Model.Name" />
                 </div>
-            </NotAuthorized>
-        </AuthorizeView>
-        <div class="col s12">
-            <SfTextBox @bind-Value="Model.Name"
-                       FloatLabelType="FloatLabelType.Auto"
-                       Placeholder="Real Name or Alias" />
-            <ValidationMessage For="() => Model.Name" />
-        </div>
-        <div class="col s12">
-            <SfTextBox @bind-Value="Model.Description"
-                       FloatLabelType="FloatLabelType.Auto"
-                       Placeholder="What do you stream about? What sort of things can people expect?"
-                       Multiline="true" />
-            <ValidationMessage For="() => Model.Description" />
-        </div>
-        <div class="col s12">
-            <SfCheckBox @bind-Checked="Model.IsStreamer" Label="Are you the streamer being registered?" />
-        </div>
-        <div class="col s12">
-            <h5>Platforms</h5>
-            <PlatformList @bind-Platforms="Model.Platforms" />
-            <ValidationMessage For="() => Model.Platforms" />
-        </div>
-        <div class="col s12">
-            <h5>Technologies</h5>
-            <SelectTechnology @bind-SelectedTechnologies="Model.Technologies" />
-        </div>
-        <div class="col s12">
-            <button class="btn btn-primary">Submit</button>
-        </div>
-    </EditForm>
+                <div class="col s12">
+                    <SfTextBox @bind-Value="Model.Description"
+                               FloatLabelType="FloatLabelType.Auto"
+                               Placeholder="What do you stream about? What sort of things can people expect?"
+                               Multiline="true" />
+                    <ValidationMessage For="() => Model.Description" />
+                </div>
+                <div class="col s12">
+                    <SfCheckBox @bind-Checked="Model.IsStreamer" Label="Are you the streamer being registered?" />
+                </div>
+                <div class="col s12">
+                    <h5>Platforms</h5>
+                    <PlatformList @bind-Platforms="Model.Platforms" />
+                    <ValidationMessage For="() => Model.Platforms" />
+                </div>
+                <div class="col s12">
+                    <h5>Technologies</h5>
+                    <SelectTechnology @bind-SelectedTechnologies="Model.Technologies" />
+                </div>
+                <div class="col s12">
+                    <button class="btn btn-primary">Submit</button>
+                </div>
+            </EditForm>
+        </Authorized>
+    </AuthorizeView>
 </div>
 @code {
 
@@ -88,13 +70,6 @@
     protected override async Task OnInitializedAsync()
     {
         Model = new RegistrationModel();
-
-        var currentEmail = (await AuthenticationProvider.GetAuthenticationStateAsync()).User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-
-        if (currentEmail != null)
-        {
-            Model.Email = currentEmail;
-        }
     }
 
     public async void Register()
@@ -102,7 +77,6 @@
         await Mediator.Send(new RegisterNewStreamer
         {
             Name = Model.Name,
-            Email = Model.Email,
             Description = Model.Description,
             IsStreamer = Model.IsStreamer,
             Platforms = Model.Platforms.Select(m => new RegisterNewStreamer.Platform { Name = m.Name, Url = m.Url }),

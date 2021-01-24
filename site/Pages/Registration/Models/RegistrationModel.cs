@@ -8,7 +8,6 @@ namespace site.Pages.Registration.Models
     public class RegistrationModel
     {
         public string Name { get; set; }
-        public string Email { get; set; }
         public string Description { get; set; }
         public bool IsStreamer { get; set; }
 

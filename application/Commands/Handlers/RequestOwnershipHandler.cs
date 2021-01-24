@@ -27,6 +27,7 @@ namespace application.Commands.Handlers
 
             var claimedStream = (from s in _context.Streamers
                                  join rs in _context.RegisteredStreamers on s.Id equals rs.StreamerId
+                                 where s.Id == requestOwnership.ClaimedStreamerId
                                  select new
                                  {
                                      Email = rs.Email

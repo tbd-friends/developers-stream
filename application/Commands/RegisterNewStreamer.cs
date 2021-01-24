@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using application.Infrastructure;
 using MediatR;
 
 namespace application.Commands
 {
-    public class RegisterNewStreamer : IRequest
+    public class RegisterNewStreamer : IRequestWithUser
     {
         public string Name { get; set; }
         public string ProfileId { get; set; }
