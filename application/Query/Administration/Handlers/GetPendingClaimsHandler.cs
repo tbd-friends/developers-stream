@@ -31,6 +31,7 @@ namespace application.Query.Administration.Handlers
                               Name = s.Name,
                               CurrentEmail = sc.CurrentEmail,
                               UpdatedEmail = sc.UpdatedEmail,
+                              Details = sc.Details,
                               Created = sc.Created
                           };
 

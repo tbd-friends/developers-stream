@@ -9,5 +9,6 @@ namespace viewmodels
         public string CurrentEmail { get; set; }
         public string UpdatedEmail { get; set; }
         public DateTime Created { get; set; }
+        public string Details { get; set; }
     }
 }
