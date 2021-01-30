@@ -21,6 +21,7 @@ namespace application.tests.when_a_user_makes_an_ownership_claim
         private string CurrentProfileId = "current-profile-id";
         private string UserEmail = "logged-in-user-email";
         private string ProfileId = "logged-in-profile-id";
+        private string Details = "details-with-claiming-streamer";
         private StreamerOwnershipRequest Output;
 
         public when_currently_owned_by_another_user()
@@ -71,7 +72,8 @@ namespace application.tests.when_a_user_makes_an_ownership_claim
                     {
                         ClaimedStreamerId = ClaimedStreamerId,
                         Email = UserEmail,
-                        ProfileId = ProfileId
+                        ProfileId = ProfileId,
+                        Details = Details
                     }, CancellationToken.None)
                 .GetAwaiter().GetResult();
         }
@@ -104,6 +106,12 @@ namespace application.tests.when_a_user_makes_an_ownership_claim
         public void ownership_request_contains_logged_in_user_profile_id()
         {
             Output.ProfileId.Should().Be(ProfileId);
+        }
+
+        [Fact]
+        public void ownership_request_contains_details_provided()
+        {
+            Output.Details.Should().Be(Details);
         }
 
         [Fact]

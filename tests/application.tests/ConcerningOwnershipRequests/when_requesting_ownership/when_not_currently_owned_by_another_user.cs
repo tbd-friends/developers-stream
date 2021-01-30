@@ -5,6 +5,7 @@ using application.Commands;
 using application.Commands.Handlers;
 using core;
 using core.Enums;
+using core.Migrations;
 using core.Models;
 using FluentAssertions;
 using Moq;
@@ -16,8 +17,10 @@ namespace application.tests.when_a_user_makes_an_ownership_claim
     {
         private Mock<IApplicationContext> Context;
         private RequestOwnershipHandler Subject;
-        private readonly Guid ClaimedStreamerId = Guid.Parse("EFF33F3E-85CF-4544-B9F1-88710FAA5F12");
+        private readonly Guid ClaimedStreamerId = Guid.Parse("62206193-1466-424C-B9CF-23682E760469");
         private string RequestingUserEmail = "requesting-user-email";
+        private string ProfileId = "profile-id";
+        private string Details = "details-of-claim";
 
         private StreamerOwnershipRequest Output;
 
@@ -56,7 +59,9 @@ namespace application.tests.when_a_user_makes_an_ownership_claim
             Subject.Handle(new RequestOwnership
             {
                 ClaimedStreamerId = ClaimedStreamerId,
-                Email = RequestingUserEmail
+                Email = RequestingUserEmail,
+                ProfileId = ProfileId,
+                Details = Details
             }, CancellationToken.None).GetAwaiter().GetResult();
         }
 
@@ -82,6 +87,12 @@ namespace application.tests.when_a_user_makes_an_ownership_claim
         public void request_contains_current_user_email()
         {
             Output.UpdatedEmail.Should().Be(RequestingUserEmail);
+        }
+
+        [Fact]
+        public void request_contains_details_provided()
+        {
+            Output.Details.Should().Be(Details);
         }
 
         [Fact]

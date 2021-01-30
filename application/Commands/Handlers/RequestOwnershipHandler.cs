@@ -39,6 +39,7 @@ namespace application.Commands.Handlers
                 CurrentEmail = claimedStream?.Email,
                 UpdatedEmail = requestOwnership.Email,
                 ProfileId = requestOwnership.ProfileId,
+                Details = requestOwnership.Details,
                 Created = DateTime.UtcNow,
                 Status = OwnershipRequestStatus.PendingApproval
             });

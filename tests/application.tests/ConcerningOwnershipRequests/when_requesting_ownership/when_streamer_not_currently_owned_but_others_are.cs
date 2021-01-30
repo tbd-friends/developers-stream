@@ -20,6 +20,8 @@ namespace application.tests.when_a_user_makes_an_ownership_claim
         private readonly Guid OtherStreamerId = Guid.Parse("6D5EB171-FB7B-4BF2-BD21-98AF80976D5F");
         private string RequestingUserEmail = "requesting-user-email";
         private string OtherStreamerEmail = "other-streamer-email";
+        private string ProfileId = "profile-id";
+        private string Details = "details-of-claim";
 
         private StreamerOwnershipRequest Output;
 
@@ -73,10 +75,11 @@ namespace application.tests.when_a_user_makes_an_ownership_claim
             Subject.Handle(new RequestOwnership
             {
                 ClaimedStreamerId = ClaimedStreamerId,
-                Email = RequestingUserEmail
+                Email = RequestingUserEmail,
+                ProfileId = ProfileId,
+                Details = Details
             }, CancellationToken.None).GetAwaiter().GetResult();
         }
-
 
         [Fact]
         public void ownership_request_is_made_for_streamer_id()
@@ -100,6 +103,12 @@ namespace application.tests.when_a_user_makes_an_ownership_claim
         public void request_contains_current_user_email()
         {
             Output.UpdatedEmail.Should().Be(RequestingUserEmail);
+        }
+
+        [Fact]
+        public void request_contains_details_provided()
+        {
+            Output.Details.Should().Be(Details);
         }
 
         [Fact]

@@ -1,4 +1,5 @@
 ﻿@using MediatR
+@using application.Commands
 @if (DialogIsVisible)
 {
     <SfDialog Width="600px" Height="375px" Target="#target" IsModal="true" ShowCloseIcon="true" @bind-Visible="DialogIsVisible">
@@ -9,12 +10,13 @@
                     <SfTextBox Multiline="true"
                                Width="100"
                                CssClass="text-multiline"
-                               Placeholder="If you are claiming this streamer, either to manage the streamer information or you are the streamer, please provide enough information below as to your reasons for the claim along with how we might contact you to verify." />
+                               @bind-Value="Details"
+                               Placeholder="If you are claiming this streamer, either to manage the streamer information or you are the streamer, please provide enough information below as to your reasons for the claim along with how we might contact you to verify. Failure to provide contact details will result in a denied request." />
                 </EditForm>
             </Content>
         </DialogTemplates>
         <DialogButtons>
-            <SfButton IsPrimary="true">Claim</SfButton>
+            <SfButton IsPrimary="true" OnClick="@MakeClaim">Claim</SfButton>
             <SfButton OnClick="@CancelClaim">Cancel</SfButton>
         </DialogButtons>
         <DialogAnimationSettings Effect="@DialogEffect.Zoom"></DialogAnimationSettings>
@@ -30,12 +32,18 @@
     [Inject]
     public IMediator Mediator { get; set; }
 
-    public string Reason { get; set; }
+    public string Details { get; set; }
 
-    //public async Task MakeClaim()
-    //{
-    //    // await Mediator.Send(new ClaimStreamer { StreamerId = StreamerId, Reason = Reason } );
-    //}
+    public async Task MakeClaim()
+    {
+        await Mediator.Send(new RequestOwnership
+        {
+            ClaimedStreamerId = StreamerId,
+            Details = Details
+        });
+
+        DialogIsVisible = false;
+    }
 
     public void CancelClaim()
     {

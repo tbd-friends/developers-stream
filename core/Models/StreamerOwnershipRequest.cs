@@ -10,6 +10,7 @@ namespace core.Models
         public string CurrentEmail { get; set; }
         public string UpdatedEmail { get; set; }
         public string ProfileId { get; set; }
+        public string Details { get; set; }
         public OwnershipRequestStatus Status { get; set; }
         public DateTime Created { get; set; }
         public DateTime? Updated { get; set; }
