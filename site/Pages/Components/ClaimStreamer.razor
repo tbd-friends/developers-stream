@@ -1,0 +1,44 @@
+﻿@using MediatR
+@if (DialogIsVisible)
+{
+    <SfDialog Width="600px" Height="375px" Target="#target" IsModal="true" ShowCloseIcon="true" @bind-Visible="DialogIsVisible">
+        <DialogTemplates>
+            <Header>More information is required</Header>
+            <Content>
+                <EditForm Model="this">
+                    <SfTextBox Multiline="true"
+                               Width="100"
+                               CssClass="text-multiline"
+                               Placeholder="If you are claiming this streamer, either to manage the streamer information or you are the streamer, please provide enough information below as to your reasons for the claim along with how we might contact you to verify." />
+                </EditForm>
+            </Content>
+        </DialogTemplates>
+        <DialogButtons>
+            <SfButton IsPrimary="true">Claim</SfButton>
+            <SfButton OnClick="@CancelClaim">Cancel</SfButton>
+        </DialogButtons>
+        <DialogAnimationSettings Effect="@DialogEffect.Zoom"></DialogAnimationSettings>
+    </SfDialog>
+}
+@code {
+    [Parameter]
+    public Guid StreamerId { get; set; }
+    [Parameter]
+    public bool DialogIsVisible { get; set; }
+    [Parameter]
+    public EventCallback<bool> DialogIsVisibleChanged { get; set; }
+    [Inject]
+    public IMediator Mediator { get; set; }
+
+    public string Reason { get; set; }
+
+    //public async Task MakeClaim()
+    //{
+    //    // await Mediator.Send(new ClaimStreamer { StreamerId = StreamerId, Reason = Reason } );
+    //}
+
+    public void CancelClaim()
+    {
+        DialogIsVisible = false;
+    }
+}

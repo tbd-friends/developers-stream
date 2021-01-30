@@ -161,3 +161,7 @@ Validation Errors
                 font-size: 2.5em;
                 padding: 3px;
             }
+
+.text-multiline textarea {
+    height: 250px !important;
+}

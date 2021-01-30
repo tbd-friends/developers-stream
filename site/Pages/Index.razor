@@ -4,6 +4,7 @@
 @using application.Query
 @using System.Timers
 @using site.Pages.Components;
+@using System.Security.Principal
 
 <SearchInput OnSearchEntered="DoSearch" />
 
@@ -16,7 +17,7 @@
                 <StreamerCard Streamer="stream" />
             }
         </div>
-
+       
         <Paginator TotalItems="PagedResult.TotalItems" PageSize="PageSize" OnPageChanged="ChangePage" />
     </div>
 }
@@ -28,7 +29,9 @@
     private PagedResult<StreamerViewModel> PagedResult { get; set; }
 
     private string Term { get; set; }
-    public int PageSize = 6;
+
+    public int PageSize = 9;
+    public ClaimStreamer claimDialog;
 
     protected override async Task OnInitializedAsync()
     {
