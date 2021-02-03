@@ -165,3 +165,7 @@ Validation Errors
 .text-multiline textarea {
     height: 250px !important;
 }
+
+.e-btn {
+    line-height: 2em;
+}

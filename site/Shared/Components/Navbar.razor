@@ -1,37 +1,66 @@
-﻿@using Syncfusion.Blazor.Buttons
+﻿<SfToolbar CssClass="e-bigger">
+    <ToolbarItems>
+        <ToolbarItem Align="ItemAlign.Left" CssClass="developers-stream-logo">
+            <Template>
+                <a href="/">
+                    <img src="images/developers_stream.svg" alt="developers//stream" title="developers//stream" />
+                </a>
+            </Template>
+        </ToolbarItem>
+        <ToolbarItem Align="@ItemAlign.Right">
+            <Template>
+                <AuthorizeView>
+                    <Authorized>
+                        <SfButton CssClass="e-warning"
+                                  @onclick="@(() => NavigationManager.NavigateTo("logout", true))">Logout</SfButton>
+                    </Authorized>
+                    <NotAuthorized>
+                        <SfButton IsPrimary="true"
+                                  @onclick="@(() => NavigationManager.NavigateTo("login?redirectUri=/register", true))">Login</SfButton>
+                    </NotAuthorized>
+                </AuthorizeView>
+            </Template>
+        </ToolbarItem>
+        <ToolbarItem  Align="@ItemAlign.Right">
+            <Template>
+                <AuthorizeView Roles="Administrator">
+                    <SfButton CssClass="e-info" @onclick="@(() => NavigationManager.NavigateTo("administration"))">Administration</SfButton>
+                </AuthorizeView>
+            </Template>
+        </ToolbarItem>
+        <ToolbarItem  Align="@ItemAlign.Right">
+            <Template>
+                <AuthorizeView Roles="Streamer">
+                    <SfButton CssClass="e-info" @onclick="@(() => NavigationManager.NavigateTo("my-profile"))">Profile</SfButton>
+                </AuthorizeView>
+            </Template>
+        </ToolbarItem>
+    </ToolbarItems>
+</SfToolbar>
 
-<nav class="blue-grey darken-4">
-    <div class="nav-wrapper">
-        <a href="/" class="brand-logo">
-            <img src="images/developers_stream.svg" alt="developers//stream" title="developers//stream" />
-        </a>
-        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-        <ul class="right hide-on-med-and-down">
-            <AuthorizeView>
-                <Authorized>
-                    <li>
-                        <a href="logout" class="btn red waves-effect waves-light">Logout</a>
-                    </li>
-                </Authorized>
-                <NotAuthorized>
-                    <li>
-                        <a href="login?redirectUri=/register" class="btn light-blue waves-effect waves-light">Login</a>
-                    </li>
-                </NotAuthorized>
-            </AuthorizeView>
-            <AuthorizeView Roles="Administrator">
-                <li>
-                    <a href="administration" class="btn orange waves-effect waves-light">Administration</a>
-                </li>
-            </AuthorizeView>
-            <AuthorizeView Roles="Streamer">
-                <li>
-                    <a href="my-profile" class="btn orange waves-effect waves-light">My Profile</a>
-                </li>
-            </AuthorizeView>
-            <li>
-                <a href="/register-streamer" class="btn light-green waves-effect waves-light">Register Streamer</a>
-            </li>
-        </ul>
-    </div>
-</nav>
+<style>
+    .e-toolbar {
+        height: 64px;
+        margin: 0;
+        padding: 0;
+        border: 1px solid #f00;
+    }
+
+    .developers-stream-logo {
+        height: 128px;
+        border: 1px solid #0f0;
+        margin: 0;
+        padding: 0;
+    }
+
+    .developers-stream-logo > a > img {
+        border: 1px solid #00f;
+        }
+
+</style>
+
+@code
+{
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+}

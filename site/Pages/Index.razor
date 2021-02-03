@@ -8,6 +8,10 @@
 
 <SearchInput OnSearchEntered="DoSearch" />
 
+<div>
+    <SfButton CssClass="e-success" @onclick="@(() => NavigationManager.NavigateTo("/register-streamer"))">Register</SfButton>
+</div>
+
 @if (PagedResult != null)
 {
     <div class="flex">
@@ -17,7 +21,7 @@
                 <StreamerCard Streamer="stream" />
             }
         </div>
-       
+
         <Paginator TotalItems="PagedResult.TotalItems" PageSize="PageSize" OnPageChanged="ChangePage" />
     </div>
 }
@@ -26,8 +30,11 @@
 {
     [Inject]
     private IMediator Mediator { get; set; }
-    private PagedResult<StreamerViewModel> PagedResult { get; set; }
 
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+    
+    private PagedResult<StreamerViewModel> PagedResult { get; set; }
     private string Term { get; set; }
 
     public int PageSize = 9;
