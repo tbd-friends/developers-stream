@@ -18,9 +18,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@master/devicon.min.css">
 </head>
 <body>
-    <app>
-        <component type="typeof(App)" render-mode="ServerPrerendered" />
-    </app>
+    <div class="container e-bigger">
+        <app>
+            <component type="typeof(App)" render-mode="ServerPrerendered" />
+        </app>
+    </div>
 
     <div id="blazor-error-ui">
         <environment include="Staging,Production">
@@ -36,7 +38,7 @@
     <script src="_framework/blazor.server.js"></script>
 
     <script src="https://cdn.syncfusion.com/blazor/18.3.42/syncfusion-blazor.min.js"></script>
-    <script src="lib/materialize/js/materialize.min.js"></script>
+    @*<script src="lib/materialize/js/materialize.min.js"></script>*@
     <script src="~/js/site.js" defer="defer"></script>
 </body>
 </html>

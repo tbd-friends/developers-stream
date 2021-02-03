@@ -1,18 +1,35 @@
 ﻿@using viewmodels
 
-<div>
-    <ul class="pagination">
-        <li class="@DetermineActive()"><a href="#!" @onclick="(Decrement)"><i class="material-icons">chevron_left</i></a></li>
-        @for (int page = 1; page < LastPage; page++)
-        {
-            int currentPage = page;
-            <li class="@DeterminePage(currentPage)">
-                <a href="#!" @onclick="(() => SelectPage(currentPage))">@currentPage</a>
-            </li>
-        }
-        <li class="@DetermineActive(true)"><a href="#!" @onclick="(Increment)"><i class="material-icons">chevron_right</i></a></li>
-    </ul>
+<div class="pagination">
+    <div class="@DetermineActive()"><a href="#!" @onclick="(Decrement)"><i class="material-icons">chevron_left</i></a></div>
+    @for (int page = 1; page < LastPage; page++)
+    {
+        int currentPage = page;
+        <div class="page @DeterminePage(currentPage)">
+            <a href="#!" @onclick="(() => SelectPage(currentPage))">@currentPage</a>
+        </div>
+    }
+    <div class="@DetermineActive(true)"><a href="#!" @onclick="(Increment)"><i class="material-icons">chevron_right</i></a></div>
 </div>
+
+<style>
+    .pagination {
+        display: flex;
+        font-size: 1.2em;
+        margin: 10px 0;
+    }
+
+        .pagination .page {
+            margin: 0 4px;
+            padding: 0 2px;
+        }
+
+            .pagination .page.active a {
+                border: 0;
+                text-decoration: none;
+                font-weight: 800;
+            }
+</style>
 @code
 {
     [Parameter]
