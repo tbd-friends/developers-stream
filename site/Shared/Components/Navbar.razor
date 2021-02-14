@@ -1,61 +1,66 @@
-﻿<SfToolbar CssClass="e-bigger">
-    <ToolbarItems>
-        <ToolbarItem Align="ItemAlign.Left" CssClass="developers-stream-logo">
-            <Template>
-                <a href="/">
-                    <img src="images/developers_stream.svg" alt="developers//stream" title="developers//stream" />
-                </a>
-            </Template>
-        </ToolbarItem>
-        <ToolbarItem Align="@ItemAlign.Right">
-            <Template>
-                <AuthorizeView>
-                    <Authorized>
-                        <SfButton CssClass="e-warning"
-                                  @onclick="@(() => NavigationManager.NavigateTo("logout", true))">Logout</SfButton>
-                    </Authorized>
-                    <NotAuthorized>
-                        <SfButton IsPrimary="true"
-                                  @onclick="@(() => NavigationManager.NavigateTo("login?redirectUri=/register", true))">Login</SfButton>
-                    </NotAuthorized>
-                </AuthorizeView>
-            </Template>
-        </ToolbarItem>
-        <ToolbarItem  Align="@ItemAlign.Right">
-            <Template>
-                <AuthorizeView Roles="Administrator">
-                    <SfButton CssClass="e-info" @onclick="@(() => NavigationManager.NavigateTo("administration"))">Administration</SfButton>
-                </AuthorizeView>
-            </Template>
-        </ToolbarItem>
-        <ToolbarItem  Align="@ItemAlign.Right">
-            <Template>
-                <AuthorizeView Roles="Streamer">
-                    <SfButton CssClass="e-info" @onclick="@(() => NavigationManager.NavigateTo("my-profile"))">Profile</SfButton>
-                </AuthorizeView>
-            </Template>
-        </ToolbarItem>
-    </ToolbarItems>
-</SfToolbar>
+﻿<nav class="bg-white">
+    <div class="container">
+        <SfToolbar CssClass="e-bigger">
+            <ToolbarItems>
+                <ToolbarItem Align="ItemAlign.Left" CssClass="developers-stream-logo">
+                    <Template>
+                        <a href="/">
+                            <img src="images/logo.svg" alt="developers//stream" title="developers//stream" />
+                        </a>
+                    </Template>
+                </ToolbarItem>
+                <ToolbarItem Align="@ItemAlign.Right">
+                    <Template>
+                        <AuthorizeView>
+                            <Authorized>
+                                <SfButton CssClass="e-warning"
+                                          @onclick="@(() => NavigationManager.NavigateTo("logout", true))">Logout</SfButton>
+                            </Authorized>
+                            <NotAuthorized>
+                                <SfButton IsPrimary="true"
+                                          @onclick="@(() => NavigationManager.NavigateTo("login?redirectUri=/register", true))">Login</SfButton>
+                            </NotAuthorized>
+                        </AuthorizeView>
+                    </Template>
+                </ToolbarItem>
+                <ToolbarItem Align="@ItemAlign.Right">
+                    <Template>
+                        <AuthorizeView Roles="Administrator">
+                            <SfButton CssClass="e-info" @onclick="@(() => NavigationManager.NavigateTo("administration"))">Administration</SfButton>
+                        </AuthorizeView>
+                    </Template>
+                </ToolbarItem>
+                <ToolbarItem Align="@ItemAlign.Right">
+                    <Template>
+                        <AuthorizeView Roles="Streamer">
+                            <SfButton CssClass="e-info" @onclick="@(() => NavigationManager.NavigateTo("my-profile"))">Profile</SfButton>
+                        </AuthorizeView>
+                    </Template>
+                </ToolbarItem>
+            </ToolbarItems>
+        </SfToolbar>
 
+    </div>
+</nav>
 <style>
     .e-toolbar {
         height: 64px;
         margin: 0;
         padding: 0;
     }
-
+        .e-toolbar .e-toolbar-items {
+            background: #ffffff !important;
+        }
     .developers-stream-logo {
         margin: 0;
         padding: 0 !important;
     }
 
-    .developers-stream-logo > a > img {
-        height: 56px;
-        margin: 0;
-        padding: 0;
-    }
-
+        .developers-stream-logo > a > img {
+            height: 40px;
+            margin: 0;
+            padding: 0;
+        }
 </style>
 
 @code
