@@ -4,14 +4,15 @@
 <header>
     <Navbar />
 </header>
-<main>
+<main role="main" class="container py-2">
     @Body
 </main>
-<footer class="page-footer grey darken-4">
-    <div class="footer-copyright">
-        <div class="container">
-            &copy; 2021 Terry Burns-Dyson
-            <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+
+<footer class="text-muted bg-white">
+    <div class="container">
+        <div class="d-flex justify-content-between">
+            <span>&copy; @DateTime.Now.Year <a href="https://tbdgamer.stream/" target="_blank"> Terry Burns-Dyson</a></span>
+            <span>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik" target="_blank">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon" target="_blank">www.flaticon.com</a></span>
         </div>
     </div>
 </footer>

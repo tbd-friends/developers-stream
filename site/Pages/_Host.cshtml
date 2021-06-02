@@ -9,20 +9,19 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>site</title>
+    <title>Developers Stream</title>
     <base href="~/" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
-    <link href="~/css/site.css" rel="stylesheet" />
-    @*<link href="~/lib/materialize/css/materialize.min.css" rel="stylesheet" />*@
+    <link href="~/css/style.css" rel="stylesheet" />
+    @*<link href="~/css/site.css" rel="stylesheet" />*@
+    <link href="~/css/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link href="_content/Syncfusion.Blazor/styles/material.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@master/devicon.min.css">
 </head>
 <body>
-    <div class="container e-bigger">
-        <app>
-            <component type="typeof(App)" render-mode="ServerPrerendered" />
-        </app>
-    </div>
+    <app>
+        <component type="typeof(App)" render-mode="ServerPrerendered" />
+    </app>
 
     <div id="blazor-error-ui">
         <environment include="Staging,Production">
@@ -36,9 +35,7 @@
     </div>
 
     <script src="_framework/blazor.server.js"></script>
-
     <script src="https://cdn.syncfusion.com/blazor/18.3.42/syncfusion-blazor.min.js"></script>
-    @*<script src="lib/materialize/js/materialize.min.js"></script>*@
     <script src="~/js/site.js" defer="defer"></script>
 </body>
 </html>
