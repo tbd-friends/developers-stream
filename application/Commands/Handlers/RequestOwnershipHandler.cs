@@ -30,7 +30,7 @@ namespace application.Commands.Handlers
                                  where s.Id == requestOwnership.ClaimedStreamerId
                                  select new
                                  {
-                                     Email = rs.Email
+                                     rs.Email
                                  }).SingleOrDefault();
 
             _context.Insert(new StreamerOwnershipRequest

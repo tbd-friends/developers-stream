@@ -32,13 +32,13 @@ namespace application.Query.Administration.Handlers
                                         Name = s.Name,
                                         Description = s.Description,
                                         IsStreamer = s.IsStreamer,
-                                        Platforms = from p in _context.StreamerPlatforms
-                                                    where p.StreamerId == s.Id
-                                                    select new PlatformViewModel { Name = p.Name, Url = p.Url },
-                                        Technologies = from st in _context.StreamerTechnologies
-                                                       join t in _context.AvailableTechnologies on st.TechnologyId equals t.Id
-                                                       where st.StreamerId == s.Id
-                                                       select t.Name,
+                                        Platforms = (from p in _context.StreamerPlatforms
+                                                     where p.StreamerId == s.Id
+                                                     select new PlatformViewModel { Name = p.Name, Url = p.Url }).ToList(),
+                                        Technologies = (from st in _context.StreamerTechnologies
+                                                        join t in _context.AvailableTechnologies on st.TechnologyId equals t.Id
+                                                        where st.StreamerId == s.Id
+                                                        select t.Name).ToList(),
                                         IsPendingVerification = s.Status == StreamerStatus.PendingVerification,
                                         IsRejected = s.Status == StreamerStatus.Rejected
                                     }).AsEnumerable());

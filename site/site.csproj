@@ -12,18 +12,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Auth0.AuthenticationApi" Version="7.4.0" />
-    <PackageReference Include="Auth0.ManagementApi" Version="7.4.0" />
-    <PackageReference Include="FluentValidation" Version="9.3.0" />
-    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="9.3.0" />
+    <PackageReference Include="Auth0.AuthenticationApi" Version="7.8.0" />
+    <PackageReference Include="Auth0.ManagementApi" Version="7.8.0" />
+    <PackageReference Include="FluentValidation" Version="10.2.2" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="10.2.2" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="3.1.9" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.9">
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.6">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.9" />
-    <PackageReference Include="Syncfusion.Blazor" Version="18.3.0.42" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.6" />
+    <PackageReference Include="Syncfusion.Blazor" Version="19.1.0.66" />
   </ItemGroup>
 
   <ItemGroup>

@@ -30,17 +30,17 @@ namespace application.Query.Streamer.Handlers
                               Id = stream.Id,
                               Name = stream.Name,
                               Description = stream.Description,
-                              Platforms = from p in _context.StreamerPlatforms
-                                          where p.StreamerId == stream.Id
-                                          select new PlatformViewModel
-                                          {
-                                              Name = p.Name,
-                                              Url = p.Url
-                                          },
-                              Technologies = from st in _context.StreamerTechnologies
-                                             join a in _context.AvailableTechnologies on st.TechnologyId equals a.Id
-                                             where st.StreamerId == stream.Id
-                                             select a.Name
+                              Platforms = (from p in _context.StreamerPlatforms
+                                           where p.StreamerId == stream.Id
+                                           select new PlatformViewModel
+                                           {
+                                               Name = p.Name,
+                                               Url = p.Url
+                                           }).ToList(),
+                              Technologies = (from st in _context.StreamerTechnologies
+                                              join a in _context.AvailableTechnologies on st.TechnologyId equals a.Id
+                                              where st.StreamerId == stream.Id
+                                              select a.Name).ToList()
                           };
 
             return Task.FromResult(results.AsEnumerable());

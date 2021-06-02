@@ -35,12 +35,18 @@ footer {
     }
 
 
+@media(max-width: 1280px) {
+    .developers-stream-logo img {
+        width: 85%;
+        height: 60%;
+    }
+}
+
 /*
 
     Padding
 
 */
-
 .padding-left-right-1 {
     padding: 0 1px;
 }
@@ -130,12 +136,6 @@ Validation Errors
     Streamer Cards Layout
 */
 
-/*.flex {
-    display: flex;
-    flex-direction: column;
-    max-width: 100%;
-}*/
-
 .streamer-cards {
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
     display: grid;
@@ -145,6 +145,7 @@ Validation Errors
     .streamer-cards .streamer-card {
         min-height: 12em;
         padding: 5px 10px;
+        border: 1px solid #0f0;
     }
 
 
@@ -161,6 +162,11 @@ Validation Errors
                 font-size: 2.5em;
                 padding: 3px;
             }
+
+        .streamer-cards .streamer-card .streamer-card-content .streamer-card-title {
+            font-size: 1.5em;
+            font-weight: 500;
+        }
 
 .text-multiline textarea {
     height: 250px !important;

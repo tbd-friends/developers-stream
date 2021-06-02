@@ -3,6 +3,7 @@
 @using viewmodels
 
 <SfMultiSelect TValue="Guid[]"
+               TItem="TechnologyViewModel"
                Value="SelectedTechnologies"
                ValueChanged="(value) => SelectedTechnologiesChanged.InvokeAsync(value)"
                Mode="@VisualMode.Default"

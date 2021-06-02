@@ -1,0 +1,20 @@
+﻿@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #3E3175;
+    }
+
+    .developers-stream-logo img {
+   /*     filter: invert(1);*/
+    }
+
+    .e-toolbar {
+        background-color: #090909;
+    }
+
+    .streamer-cards .streamer-card {
+        color: #f1f1f1;
+        min-height: 12em;
+        padding: 5px 10px;
+        border: 0;
+    }
+}

@@ -5,22 +5,8 @@
                 <ToolbarItem Align="ItemAlign.Left" CssClass="developers-stream-logo">
                     <Template>
                         <a href="/">
-                            <img src="images/logo.svg" alt="developers//stream" title="developers//stream" />
+                            <img src="images/logo_new.svg" alt="developers//stream" title="developers//stream" />
                         </a>
-                    </Template>
-                </ToolbarItem>
-                <ToolbarItem Align="@ItemAlign.Right">
-                    <Template>
-                        <AuthorizeView>
-                            <Authorized>
-                                <SfButton CssClass="e-warning"
-                                          @onclick="@(() => NavigationManager.NavigateTo("logout", true))">Logout</SfButton>
-                            </Authorized>
-                            <NotAuthorized>
-                                <SfButton IsPrimary="true"
-                                          @onclick="@(() => NavigationManager.NavigateTo("login?redirectUri=/register", true))">Login</SfButton>
-                            </NotAuthorized>
-                        </AuthorizeView>
                     </Template>
                 </ToolbarItem>
                 <ToolbarItem Align="@ItemAlign.Right">
@@ -37,9 +23,22 @@
                         </AuthorizeView>
                     </Template>
                 </ToolbarItem>
+                <ToolbarItem Align="@ItemAlign.Right">
+                    <Template>
+                        <AuthorizeView>
+                            <Authorized>
+                                <SfButton CssClass="e-warning"
+                                          @onclick="@(() => NavigationManager.NavigateTo("logout", true))">Logout</SfButton>
+                            </Authorized>
+                            <NotAuthorized>
+                                <SfButton IsPrimary="true"
+                                          @onclick="@(() => NavigationManager.NavigateTo("login?redirectUri=/register", true))">Login</SfButton>
+                            </NotAuthorized>
+                        </AuthorizeView>
+                    </Template>
+                </ToolbarItem>
             </ToolbarItems>
         </SfToolbar>
-
     </div>
 </nav>
 <style>
@@ -48,9 +47,11 @@
         margin: 0;
         padding: 0;
     }
+
         .e-toolbar .e-toolbar-items {
             background: #ffffff !important;
         }
+
     .developers-stream-logo {
         margin: 0;
         padding: 0 !important;
