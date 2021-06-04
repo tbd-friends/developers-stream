@@ -30,34 +30,6 @@
         </CardFooter>
     </SfCard>
 </div>
-@*<div class="streamer-card">
-    <div class="streamer-card-content">
-        <div class="streamer-card-title">@Streamer.Name</div>
-        <p class="streamer-card-text">@Streamer.Description</p>
-
-        <div class="streamer-platforms">
-            @foreach (var platform in Streamer.Platforms)
-            {
-                <a href="@(platform.Url)" class="platform-link">
-                    <img src="images/@(platform.Name).svg" title="@(platform.Name)" />
-                </a>
-            }
-        </div>
-        <div class="streamer-technologies">
-            @foreach (var technology in Streamer.Technologies)
-            {
-                <i class="devicon-@(technology)-original devicon-@(technology)-original-wordmark devicon-@(technology)-plain devicon-@(technology)-line colored" title="@(technology)" />
-            }
-        </div>
-        <AuthorizeView Roles="Streamer">
-            @if (@Streamer.CanStreamBeClaimed)
-            {
-                <a @onclick="ClaimStreamer" class="claim-stream-link" style="cursor:pointer">Claim!</a>
-            }
-            <ClaimStreamer StreamerId="@Streamer.Id" @bind-DialogIsVisible="IsClaimed" />
-        </AuthorizeView>
-    </div>
-</div>*@
 @code
 {
     [Parameter]
