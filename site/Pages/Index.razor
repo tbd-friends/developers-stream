@@ -12,32 +12,10 @@
 
 @if (PagedResult != null)
 {
-    <div class="row">
-        @foreach (var stream in PagedResult.Results)
+    <div class="row streamer-cards">
+        @foreach (var streamer in PagedResult.Results)
         {
-            <div class="col-lg-4 col-md-6 col-sm-12 my-2">
-                <SfCard>
-                    <CardHeader Title="@stream.Name">
-                        <div class="icons">
-                            @foreach (var platform in stream.Platforms)
-                            {
-                                <a href="@(platform.Url)" class="platform-link" target="_blank">
-                                    <img src="images/@(platform.Name).svg" title="@(platform.Name)" style="height:2em;" />
-                                </a>
-                            }
-                        </div>
-                    </CardHeader>
-                    <CardContent Content="@stream.Description" />
-                    <CardFooter>
-                        <CardFooterContent>
-                            @foreach (var technology  in stream.Technologies)
-                            {
-                                <i class="devicon-@(technology)-original devicon-@(technology)-original-wordmark devicon-@(technology)-plain devicon-@(technology)-line colored" title="@(technology)" />
-                            }
-                        </CardFooterContent>
-                    </CardFooter>
-                </SfCard>
-            </div>
+            <StreamerCard Streamer="streamer" />
         }
     </div>
     <Paginator TotalItems="PagedResult.TotalItems" PageSize="PageSize" OnPageChanged="ChangePage" />
@@ -54,7 +32,7 @@
     private PagedResult<StreamerViewModel> PagedResult { get; set; }
     private string Term { get; set; }
 
-    public int PageSize = 4;
+    public int PageSize = 8;
     public ClaimStreamer ClaimDialog;
 
     protected override async Task OnInitializedAsync()

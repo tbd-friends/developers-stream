@@ -34,14 +34,7 @@ footer {
         top: 0.5rem;
     }
 
-
-@media(max-width: 1280px) {
-    .developers-stream-logo img {
-        width: 85%;
-        height: 60%;
-    }
-}
-
+    
 /*
 
     Padding
@@ -80,31 +73,30 @@ footer {
 
 /* Platforms */
 
+.platform-listview {
+    min-height: 48px;
+}
+
 .platform-selected {
-    min-height: 42px;
+    min-height: 48px;
     display: table;
-    padding: 5px 0;
     vertical-align: middle;
 }
 
     .platform-selected img {
-        width: 30px;
-        height: 30px;
+        width: 36px;
+        height: 36px;
+        padding: 3px 3px;
         display: table-cell;
-        margin: auto 5px;
     }
 
     .platform-selected span {
         padding-left: 10px;
         vertical-align: middle;
         display: table-cell;
-        font-size: 1.2em;
+        font-size: 1.1em;
         color: #000;
     }
-
-.platform-listview {
-    padding: 15px 0 10px 0;
-}
 
 .platform-link {
     padding: 0 6px;
@@ -131,42 +123,6 @@ Validation Errors
     margin: 8px 0;
     padding: 10px;
 }
-
-/*
-    Streamer Cards Layout
-*/
-
-.streamer-cards {
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    display: grid;
-    grid-gap: 7px;
-}
-
-    .streamer-cards .streamer-card {
-        min-height: 12em;
-        padding: 5px 10px;
-        border: 1px solid #0f0;
-    }
-
-
-        .streamer-cards .streamer-card .claim-stream-link {
-            font-size: .9em;
-        }
-
-        .streamer-cards .streamer-card .streamer-technologies {
-            display: flex;
-            flex-wrap: wrap;
-        }
-
-            .streamer-cards .streamer-card .streamer-technologies i {
-                font-size: 2.5em;
-                padding: 3px;
-            }
-
-        .streamer-cards .streamer-card .streamer-card-content .streamer-card-title {
-            font-size: 1.5em;
-            font-weight: 500;
-        }
 
 .text-multiline textarea {
     height: 250px !important;

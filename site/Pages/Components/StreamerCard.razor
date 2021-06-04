@@ -1,6 +1,36 @@
 ﻿@using viewmodels
 @using MediatR
-<div class="streamer-card">
+<div class="col-lg-4 col-md-6 col-sm-12 my-2">
+    <SfCard CssClass="streamer-card">
+        <CardHeader Title="@Streamer.Name">
+            @foreach (var technology in Streamer.Technologies)
+            {
+                <i class="devicon-@(technology)-original devicon-@(technology)-original-wordmark devicon-@(technology)-plain devicon-@(technology)-line colored" title="@(technology)" />
+            }
+        </CardHeader>
+        <CardContent Content="@Streamer.Description" />
+        <CardFooter>
+            <CardFooterContent>
+                <div class="icons">
+                    @foreach (var platform in Streamer.Platforms)
+                    {
+                        <a href="@(platform.Url)" class="platform-link" target="_blank">
+                            <img src="images/@(platform.Name).svg" title="@(platform.Name)" style="height:2em;" />
+                        </a>
+                    }
+                </div>
+                <AuthorizeView Roles="Streamer">
+                    @if (@Streamer.CanStreamBeClaimed)
+                    {
+                        <SfButton @onclick="ClaimStreamer" Content="Claim" CssClass="e-info float-right" />
+                    }
+                    <ClaimStreamer StreamerId="@Streamer.Id" @bind-DialogIsVisible="IsClaimed" />
+                </AuthorizeView>
+            </CardFooterContent>
+        </CardFooter>
+    </SfCard>
+</div>
+@*<div class="streamer-card">
     <div class="streamer-card-content">
         <div class="streamer-card-title">@Streamer.Name</div>
         <p class="streamer-card-text">@Streamer.Description</p>
@@ -27,7 +57,7 @@
             <ClaimStreamer StreamerId="@Streamer.Id" @bind-DialogIsVisible="IsClaimed" />
         </AuthorizeView>
     </div>
-</div>
+</div>*@
 @code
 {
     [Parameter]

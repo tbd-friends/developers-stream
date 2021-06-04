@@ -9,7 +9,7 @@ body {
 }
 
 nav {
-    box-shadow: 0 1px 4px 1px rgb(0 0 0 / 10%); 
+    box-shadow: 0 1px 4px 1px rgb(0 0 0 / 10%);
     padding-top: 5px;
 }
 
@@ -41,7 +41,13 @@ footer {
         right: 0.75rem;
         top: 0.5rem;
     }
+/*
+    Position
+*/
 
+.float-right {
+    float: right;
+}
 
 /*
 Validation Errors
@@ -60,9 +66,14 @@ Validation Errors
 }
 
 
-/*catd styling*/
+/*card styling*/
 .e-card-header-title {
     font-size: 20px !important;
+}
+
+.e-card-header i {
+    font-size: 1.5em;
+    padding: 2px;
 }
 
 .e-card-actions i {
@@ -74,3 +85,24 @@ Validation Errors
     margin-left: 4px;
 }
 
+/* Logo */
+
+@media screen and (max-width: 999px) {
+    .developers-stream-logo > a > img.fullsize {
+        display: none;
+    }
+
+    .developers-stream-logo > a > img.mobile {
+        display: block;
+    }
+}
+
+@media screen and (min-width: 1000px) {
+    .developers-stream-logo > a > img.mobile {
+        display: none;
+    }
+
+    .developers-stream-logo > a > img.fullsize {
+        display: block;
+    }
+}

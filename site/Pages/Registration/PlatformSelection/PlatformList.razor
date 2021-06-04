@@ -7,19 +7,22 @@
 
 
 <PlatformInput OnPlatformAdded="OnPlatformAdded" />
-<SfListView Enable="true" DataSource="Platforms" TValue="Platform" CssClass="platform-listview">
-    <ListViewTemplates TValue="Platform">
-        <Template>
-            <div class="platform-selected">
-                <img src="images/@(context.Name).svg" /><span>
-                    @(context.Url)
-                    <a class="btn btn-small waves-effect waves-light" @onclick="(() => OnPlatformRemoved(context))"><i class="material-icons">cancel</i></a>
-                </span>
-            </div>
-        </Template>
-    </ListViewTemplates>
-</SfListView>
-
+@if (@Platforms != null)
+{
+    <SfListView Enable="true" DataSource="Platforms" TValue="Platform" CssClass="platform-listview">
+        <ListViewFieldSettings TValue="Platform" Id="Id" Text="Name" />
+        <ListViewTemplates TValue="Platform">
+            <Template>
+                <div class="platform-selected">
+                    <img src="images/@(context.Name).svg" />
+                    <span>
+                        @(context.Url)<a class="btn btn-small waves-effect waves-light" @onclick="(() => OnPlatformRemoved(context))"><i class="material-icons">cancel</i></a>
+                    </span>
+                </div>
+            </Template>
+        </ListViewTemplates>
+    </SfListView>
+}
 @code
 {
     [Parameter]
